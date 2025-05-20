@@ -2,7 +2,7 @@ import logging
 import streamlit as st
 
 from app_pages.menu import pages
-from lib.st_lib import configure_page, configure_sidebar
+from lib.st_lib import configure_page, configure_sidebar, initialize_mcp_metadata
 
 logging.basicConfig(
     level=logging.INFO,
@@ -14,6 +14,8 @@ logging.basicConfig(
 LOG = logging.getLogger(__name__)
 
 LOG.info("Started the app...")
+
+initialize_mcp_metadata()
 
 configure_page()
 configure_sidebar()

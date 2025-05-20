@@ -7,18 +7,24 @@ mcp = FastMCP(name="Weather Service",
 
 
 @mcp.tool()
-def get_weather(location: str) -> str:
+def get_weather(location: str = "Dallas") -> str:
     """Get the current weather for a specified location."""
     return f"Weather in {location}: Sunny, 72°F"
 
 
-@mcp.tool()
+@mcp.tool(annotations={
+        "title": "Calculate BMI",
+    "readOnlyHint": True
+    })
 def get_bmi(weight: float, height: float) -> float:
     """Calculate the Body Mass Index (BMI) given weight and height.
 
-    :param weight: Person's weight in kilograms
-    :param height: Person's height in meters
-    :return: Body Mass Index (BMI)
+It accepts following parameters:
+weight: Person's weight in kilograms
+height: Person's height in meters
+
+It returns:
+:return: Body Mass Index (BMI)
     """
     if height <= 0:
         raise ValueError("Height must be greater than zero.")

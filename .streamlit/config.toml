@@ -1,3 +1,24 @@
+[server]
+enableStaticServing=true
+
+[[theme.fontFaces]]
+family = "heading-font"
+url = "app/static/Roboto-Regular.ttf"
+weight = 300
+style = "normal"
+
+[[theme.fontFaces]]
+family = "body-font"
+url = "app/static/Roboto-Regular.ttf"
+weight = 300
+style = "normal"
+
+[[theme.fontFaces]]
+family = "code-font"
+url = "app/static/Inconsolata-Regular.ttf"
+weight = 400
+style = "normal"
+
 [theme]
 #base = "dark"
 #primaryColor = "#38BDF8"
@@ -6,21 +27,15 @@
 #textColor = "#efefef"
 #linkColor =
 #codeBackgroundColor =
-font = "monospace"
-#codeFont =
-headingFont = "sans serif"
+font = "body-font"
+codeFont = "code-font"
+headingFont = "heading-font"
 #fontFaces =
 baseRadius = "small"
 #borderColor =
 #showWidgetBorder =
 baseFontSize = 13
 #showSidebarBorder =
-
-#[[theme.fontFaces]]
-#font = "roboto-mono"
-#url = "static/roboto-mono.woff2"
-#weight = 400
-#style = "normal"
 
 [theme.sidebar]
 primaryColor = "#38BDF8"
