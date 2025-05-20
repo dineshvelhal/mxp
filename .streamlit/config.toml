@@ -1,0 +1,46 @@
+[theme]
+#base = "dark"
+#primaryColor = "#38BDF8"
+#backgroundColor = "#0F172A"
+#secondaryBackgroundColor = "#00425F"
+#textColor = "#efefef"
+#linkColor =
+#codeBackgroundColor =
+font = "monospace"
+#codeFont =
+headingFont = "sans serif"
+#fontFaces =
+baseRadius = "small"
+#borderColor =
+#showWidgetBorder =
+baseFontSize = 13
+#showSidebarBorder =
+
+#[[theme.fontFaces]]
+#font = "roboto-mono"
+#url = "static/roboto-mono.woff2"
+#weight = 400
+#style = "normal"
+
+[theme.sidebar]
+primaryColor = "#38BDF8"
+backgroundColor = "#1E293B"
+secondaryBackgroundColor = "#00425F"
+#textColor =
+#linkColor =
+#codeBackgroundColor =
+#font =
+#codeFont =
+#headingFont =
+#baseRadius =
+#borderColor =
+#showWidgetBorder =
+
+
+[logger]
+level = "info"
+messageFormat = "%(asctime)s %(levelname) -7s %(name)s: %(message)s"
+
+[client]
+# showSidebarNavigation=false
+# toolbarMode = "minimal"
