@@ -30,6 +30,20 @@ async def populate_sse_mcp_server_capabilities(mcp_server_url):
             LOG.info(f"Tool list: {tool_list}")
             st.session_state.mcp_metadata["tools"] = tool_list
 
+            # Get resources
+            resource_list = []
+            resource_result = await session.list_resources()
+
+            for resource in resource_result.resources:
+                resource_list.append(
+                    {
+                        "Name": resource.name,
+                        "Description": resource.description,
+                        # "InputSchema": resource.,
+                        "Model_json": resource.model_dump_json(),
+                    }
+                )
+
 
 async def get_stdio_mcp_server_capabilities(mcp_server_command, mcp_server_args):
     """

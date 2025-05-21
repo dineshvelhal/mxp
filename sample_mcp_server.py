@@ -31,6 +31,13 @@ It returns:
     return weight / (height ** 2)
 
 
+@mcp.resource(uri="file://{file_path}", mime_type="text/plain")
+def file_resource(file_path: str) -> str:
+    """Read the contents of a file at the specified path."""
+    with open(file_path, 'r') as f:
+        return f.read()
+
+
 if __name__ == "__main__":
     # Run the MCP server
     mcp.run(transport="sse")
