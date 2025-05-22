@@ -4,10 +4,15 @@ import pandas as pd
 import streamlit as st
 
 from lib.mcp_lib import populate_sse_mcp_server_capabilities, get_stdio_mcp_server_capabilities
-from lib.st_lib import display_mcp_summary
+from lib.st_lib import display_mcp_summary, set_current_page
 
 LOG = logging.getLogger(__name__)
 LOG.info("Starting MCP Explore page")
+
+asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
+set_current_page("mcp_explore_page")
+
 
 st.subheader("🔍 Explore MCP Servers")
 col1, col2 = st.columns(2)
@@ -25,7 +30,7 @@ with col2:
     if transport_type == "STDIO":
         LOG.info("Selected transport type: STDIO")
         command = st.selectbox("Select Command",
-                               options=["python", "uvx", "npx", "docker"],
+                               options=["npx", "docker", "python", "uvx"],
                                help="When STDIO transport type is selected, the MCP server runs as a local process. "
                                "You need to specify the command that invokes the MCP server. ")
 

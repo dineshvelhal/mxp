@@ -96,32 +96,33 @@ def display_mcp_summary():
     if "mcp_metadata" not in st.session_state:
         st.error("MCP Server is not loaded. Please load server details and try again!")
     else:
-        with st.container(border=True):
-            st.markdown("#### :blue-background[🧾 MCP Server Summary]")
-            # st.markdown(f"Transport Type: :blue[{st.session_state.mcp_metadata['transport_type']}]")
 
-            if st.session_state.mcp_metadata['transport_type'] == "STDIO":
-                st.markdown(f"""
-                | Transport Type | Command | Command Arguments |
-                |----------------|---------|------------------|
-                | {st.session_state.mcp_metadata['transport_type']} | {st.session_state.mcp_metadata['command']} | `{st.session_state.mcp_metadata['command_args']}` |
-                """)
-                # st.markdown(f"Command: :blue[{st.session_state.mcp_metadata["command"]}]")
-                # st.markdown(f"Command Arguments: :blue[{st.session_state.mcp_metadata["command_args"]}]")
-            else:
-                st.markdown(f"""
-                | Transport Type | Server URL |
-                |----------------|------------|
-                | {st.session_state.mcp_metadata['transport_type']} | {st.session_state.mcp_metadata["url"]} |
-                """)
-                # st.markdown(f"Server URL: :blue[{st.session_state.mcp_metadata["url"]}]")
+        st.markdown("#### :blue-background[🧾 MCP Server Summary]")
+        # st.markdown(f"Transport Type: :blue[{st.session_state.mcp_metadata['transport_type']}]")
 
-            st.markdown("#### :blue-background[🚀 Supplied Capabilities]")
+        if st.session_state.mcp_metadata['transport_type'] == "STDIO":
+            st.markdown(f"""
+            | Transport Type | Command | Command Arguments |
+            |----------------|---------|------------------|
+            | {st.session_state.mcp_metadata['transport_type']} | {st.session_state.mcp_metadata['command']} | {st.session_state.mcp_metadata['command_args']} |
+            """)
+            # st.markdown(f"Command: :blue[{st.session_state.mcp_metadata["command"]}]")
+            # st.markdown(f"Command Arguments: :blue[{st.session_state.mcp_metadata["command_args"]}]")
+        else:
+            st.markdown(f"""
+            | Transport Type | Server URL |
+            |----------------|------------|
+            | {st.session_state.mcp_metadata['transport_type']} | {st.session_state.mcp_metadata["url"]} |
+            """)
+            # st.markdown(f"Server URL: :blue[{st.session_state.mcp_metadata["url"]}]")
 
-            tab_tools, tab_resources, tab_prompts = st.tabs(["🛠️ Tools", "📦 Resources", "📝 Prompts"])
+        st.markdown("#### :blue-background[🚀 Supplied Capabilities]")
 
-            with tab_tools:
-                for tool in st.session_state.mcp_metadata["tools"]:
+        tab_tools, tab_resources, tab_prompts = st.tabs(["🛠️ Tools", "📦 Resources", "📝 Prompts"])
+
+        with tab_tools:
+            for tool in st.session_state.mcp_metadata["tools"]:
+                with st.container(border=True):
                     st.markdown(f"##### 🛠️ Tool Name: :blue[{tool['Name']}]")
                     # st.markdown(f"**Description**")
                     st.code(f"""DESCRIPTION
@@ -134,7 +135,12 @@ def display_mcp_summary():
                     st.markdown(dict_to_markdown_table(tool["InputSchema"]))
                     st.markdown("###### :blue-background[🔖 Annotations]")
                     st.markdown(annotations_to_markdown_table(tool["Model_json"]))
-                    st.divider()
+
+        with tab_resources:
+            st.image("images/WIP.png", width=200)
+
+        with tab_prompts:
+            st.image("images/WIP.png", width=200)
 
 
 def dict_to_markdown_table(inputSchema: dict) -> str:

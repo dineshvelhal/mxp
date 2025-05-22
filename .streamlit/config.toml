@@ -7,15 +7,27 @@ url = "app/static/Roboto-Regular.ttf"
 weight = 300
 style = "normal"
 
+#[[theme.fontFaces]]
+#family = "body-font"
+#url = "app/static/Roboto-Regular.ttf"
+#weight = 300
+#style = "normal"
+
 [[theme.fontFaces]]
 family = "body-font"
-url = "app/static/Roboto-Regular.ttf"
+url = "app/static/JetBrainsMono-VariableFont_wght.ttf"
 weight = 300
 style = "normal"
 
+#[[theme.fontFaces]]
+#family = "code-font"
+#url = "app/static/Inconsolata-Regular.ttf"
+#weight = 400
+#style = "normal"
+
 [[theme.fontFaces]]
 family = "code-font"
-url = "app/static/Inconsolata-Regular.ttf"
+url = "app/static/JetBrainsMono-VariableFont_wght.ttf"
 weight = 400
 style = "normal"
 
