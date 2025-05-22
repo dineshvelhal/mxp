@@ -14,7 +14,6 @@ async def populate_sse_mcp_server_capabilities(mcp_server_url):
     async with sse_client(mcp_server_url) as (read_stream, write_stream):
         async with ClientSession(read_stream, write_stream) as session:
             await session.initialize()
-
             # Get tools
             tool_list = []
             tool_result = await session.list_tools()
