@@ -85,13 +85,14 @@ if st.button("Load Server Details",
              help="Click to load MCP supported tools",
              type="primary"):
 
-    st.session_state.mcp_metadata["transport_type"] = transport_type
-    if transport_type == "STDIO":
-        st.session_state.mcp_metadata["command"] = command
-        st.session_state.mcp_metadata["command_args"] = arguments_editor["Arguments"].tolist()
-        asyncio.run(get_stdio_mcp_server_capabilities(command, arguments_editor["Arguments"].tolist()))
-    elif transport_type == "SSE":
-        st.session_state.mcp_metadata["url"] = sse_url
-        asyncio.run(populate_sse_mcp_server_capabilities(sse_url))
+    with st.spinner("Loading MCP server details...", show_time=True):
+        st.session_state.mcp_metadata["transport_type"] = transport_type
+        if transport_type == "STDIO":
+            st.session_state.mcp_metadata["command"] = command
+            st.session_state.mcp_metadata["command_args"] = arguments_editor["Arguments"].tolist()
+            asyncio.run(get_stdio_mcp_server_capabilities(command, arguments_editor["Arguments"].tolist()))
+        elif transport_type == "SSE":
+            st.session_state.mcp_metadata["url"] = sse_url
+            asyncio.run(populate_sse_mcp_server_capabilities(sse_url))
 
-    display_mcp_summary()
+        display_mcp_summary()

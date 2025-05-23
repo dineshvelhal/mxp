@@ -3,7 +3,7 @@ enableStaticServing=true
 
 [[theme.fontFaces]]
 family = "heading-font"
-url = "app/static/Roboto-Regular.ttf"
+url = "app/static/exo2-regular.ttf"
 weight = 300
 style = "normal"
 
@@ -33,8 +33,8 @@ style = "normal"
 
 [theme]
 #base = "dark"
-#primaryColor = "#38BDF8"
-#backgroundColor = "#0F172A"
+primaryColor = "0B76A0"
+#backgroundColor = "#F2F2F2"
 #secondaryBackgroundColor = "#00425F"
 #textColor = "#efefef"
 #linkColor =
@@ -43,7 +43,7 @@ font = "body-font"
 codeFont = "code-font"
 headingFont = "heading-font"
 #fontFaces =
-baseRadius = "small"
+baseRadius = "large"
 #borderColor =
 #showWidgetBorder =
 baseFontSize = 13

@@ -23,7 +23,7 @@ It accepts following parameters:
 weight: Person's weight in kilograms
 height: Person's height in meters
 
-It returns:
+It returns: Body Mass index (BMI) based on the metric unit inputs (weight and height).
 :return: Body Mass Index (BMI)
     """
     if height <= 0:
