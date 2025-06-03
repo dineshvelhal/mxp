@@ -19,7 +19,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     transport_type = st.selectbox("Select Transport Type",
-                                  options=["STDIO", "SSE"],
+                                  options=["SSE", "STDIO"],
                                   format_func=lambda x: "STDIO (Standard Input & Output)" if x == "STDIO" else "SSE (Server-Sent Events)",
                                   index=0,
                                   help="Transport type is how client communicates with the server. ")

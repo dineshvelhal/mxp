@@ -14,19 +14,21 @@ st.html("""<h1 style="font-family: 'Orbitron', sans-serif; font-size: 24px;">MCP
 
 # with st.container(border=True):
 st.markdown("""
-### Getting ready for the Agentic Revolution!
+    ### Certify MCP Servers before use in your organization!
+    
+    **Model Context Protocol (MCP)** enables **AI agents** to **communicate** with each other and with the world around them by providing a standardized way .
+    
+    It's vitally important to **test, evaluate and certify** the **MCP Servers** provided by 3rd party or developed in-house on various criteria
+""")
 
-**Model Context Protocol (MCP)** enables **AI agents** to **communicate** with each other and with the world around them by providing a standardized way .
+c1, c2, c3, c4 = st.columns([2, 5, 5, 2])
 
-Thus it's vitally important to **test, evaluate and certify** the **MCP Servers** provided by 3rd party or developed in-house on various criteria such as
+with c2:
+    st.image("images/banner1.png", use_container_width=True)
 
-| **Criteria**                | **Description**                                                                 |
-|-----------------------------|---------------------------------------------------------------------------------|
-| **Functionality**           | Does the server perform its intended functions correctly?                      |
-| **Performance**             | Does the server perform under load and handles resource cleanup efficiently?   |
-| **Security**                | Is the server secure against common vulnerabilities?                           |
-| **Gen AI Interoperability** | Does the server interact effectively with LLMs?                            |
-| **Usability**               | Is the server easy to use and understand?                                      |
+with c3:
+    st.image("images/banner2.png", use_container_width=True)
 
+st.markdown("""
 **MCP-Certify** performs the above tests and provides a **certification** for the MCP server. The certification is based on the results of the tests and is intended to provide assurance to users that the server meets certain standards of quality and reliability.
     """)

@@ -8,5 +8,5 @@ functional_testing_page = st.Page("app_pages/functional_testing_page.py", title=
 def pages():
     return {
         "Home": [home_page],
-        "MCP": [mcp_explore_page, mcp_analysis_page, functional_testing_page],
+        "MCP Server": [mcp_explore_page, mcp_analysis_page, functional_testing_page],
     }
