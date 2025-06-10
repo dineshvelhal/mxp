@@ -11,7 +11,7 @@ from lib.st_lib import set_current_page, display_mcp_header, get_json_from_dict
 LOG = logging.getLogger(__name__)
 LOG.info("Starting High Level Evaluation page")
 
-st.subheader("📊 High Level Evaluation")
+st.subheader("🤝 Interface Evaluation")
 
 set_current_page("mcp_analysis_page")
 
@@ -22,10 +22,6 @@ if not st.session_state.mcp_metadata['transport_type']:
     st.stop()
 
 display_mcp_header()
-
-
-
-
 
 if st.button("Evaluate", type="primary"):
     st.markdown("#### :green-background[💡 High Level Recommendations]")
