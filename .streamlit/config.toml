@@ -70,4 +70,4 @@ messageFormat = "%(asctime)s %(levelname) -7s %(name)s: %(message)s"
 
 [client]
 # showSidebarNavigation=false
-toolbarMode = "minimal"
+#toolbarMode = "minimal"

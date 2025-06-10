@@ -30,8 +30,8 @@ def configure_sidebar():
     # st.logo("images/logo.png", size="large", icon_image="images/logo.png")
     with st.sidebar:
         st.markdown('''
-##### `Version: 0.1`
-`Contact: Dinesh Velhal`''')
+## `Version: 0.1`
+## `Contact: Dinesh Velhal`''')
 
 
 

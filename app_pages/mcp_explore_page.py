@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import streamlit as st
 
-from lib.mcp_lib import populate_sse_mcp_server_capabilities, get_stdio_mcp_server_capabilities
+from lib.mcp_lib import populate_sse_mcp_server_capabilities, populate_stdio_mcp_server_capabilities
 from lib.st_lib import display_mcp_summary, set_current_page
 
 LOG = logging.getLogger(__name__)
@@ -90,7 +90,7 @@ if st.button("Load Server Details",
         if transport_type == "STDIO":
             st.session_state.mcp_metadata["command"] = command
             st.session_state.mcp_metadata["command_args"] = arguments_editor["Arguments"].tolist()
-            asyncio.run(get_stdio_mcp_server_capabilities(command, arguments_editor["Arguments"].tolist()))
+            asyncio.run(populate_stdio_mcp_server_capabilities(command, arguments_editor["Arguments"].tolist()))
         elif transport_type == "SSE":
             st.session_state.mcp_metadata["url"] = sse_url
             asyncio.run(populate_sse_mcp_server_capabilities(sse_url))

@@ -11,6 +11,8 @@ from lib.st_lib import set_current_page, display_mcp_header, get_json_from_dict
 LOG = logging.getLogger(__name__)
 LOG.info("Starting High Level Evaluation page")
 
+st.subheader("📊 High Level Evaluation")
+
 set_current_page("mcp_analysis_page")
 
 # st.subheader(":material/verified: High Level Evaluation")
@@ -91,9 +93,10 @@ if st.button("Evaluate", type="primary"):
     df = pd.DataFrame(tool_evaluation)
     styled_df = df.style.applymap(lambda x: 'background-color: lightgreen' if x == "PASS" else 'background-color: #ffcccb' if x == "FAIL" else '',
                                   subset=["Intent Check", "Input Check", "Response Check", "Error Response Check"])
-    styled_df1 = styled_df.applymap(lambda x: 'background-color: lightgreen' if x == "FULL"
-                                                else 'background-color: #ffcccb' if x == "NIL"
-                                                else 'background-color: #FFFF99' if x == "PARTIAL"
+    # styled_df = styled_df.set_properties(**{'text-align': 'center'})
+    styled_df1 = styled_df.applymap(lambda x: 'color: green' if x == "FULL"
+                                                else 'color: red' if x == "NIL"
+                                                else 'color: gray' if x == "PARTIAL"
                                                 else '',
                                     subset=["Annotations Check"])
 

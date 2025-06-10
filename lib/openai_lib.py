@@ -65,17 +65,17 @@ MCP Tool Description: {tool_description}
 
     prompt = f"""
 You are an AI assistant. Your task is to determine if the tool name and description are aligned with each other.
-Please answer with "PASS" or "FAIL" only.
+Please answer with "✅" or "❌" only.
 
 1) Check if the tool name describes some intent or action.
 2) Check if the tool description describes the tool's purpose and functionality in accordance with the tool name.
 
-respond with one word only, either "PASS" or "FAIL". No other text is needed.
+respond with one word only, either "✅" or "❌". No other text is needed.
 
 {input_val}
 """
     response = get_openai_response(prompt)
-    if response == "PASS":
+    if response == "✅":
         LOG.info("Tool intent check passed.")
         return response
     else:
@@ -103,15 +103,15 @@ MCP Tool Input Schema: {tool_input_schema}
 
     prompt = f"""
 You are an AI assistant. Your task is to determine if the tool description provides extra details about the tool input schema.
-Please answer with "PASS" or "FAIL" only.
+Please answer with "✅" or "❌" only.
 1) Check if the tool description describes the input parameters (defined as properties in the input schema), 
 their value ranges or anything else that tells more about the input parameters.
-2) Answer "PASS" only if some details is provided for all parameters involved. Otherwise answer "FAIL".
+2) Answer "✅" only if some details is provided for all parameters involved. Otherwise answer "❌".
 
 {input_val}
 """
     response = get_openai_response(prompt)
-    if response == "PASS":
+    if response == "✅":
         LOG.info("Tool input check passed.")
         return response
     else:
@@ -136,14 +136,14 @@ MCP Tool Description: {tool_description}
 
     prompt = f"""
 You are an AI assistant. Your task is to determine if the tool description provides extra details about the tool return value.
-Please answer with "PASS" or "FAIL" only.
+Please answer with "✅" or "❌" only.
 1) Check if the tool description describes the return value of the tool.
-2) Answer "PASS" only if some details is provided for the return value. Otherwise answer "FAIL".   
+2) Answer "✅" only if some details is provided for the return value. Otherwise answer "❌".   
     
 {input_val}
 """
     response = get_openai_response(prompt)
-    if response == "PASS":
+    if response == "✅":
         LOG.info("Tool return value check passed.")
         return response
     else:
@@ -170,13 +170,13 @@ MCP Tool Description: {tool_description}
 
     prompt = f"""   
 You are an AI assistant. Your task is to determine if the tool description provides extra details various error responses
-Please answer with "PASS" or "FAIL" only.
+Please answer with "✅" or "❌" only.
 1) Check if the tool description describes at least one error return value of the tool.
-2) Answer "PASS" only if some details is provided for the error return value. Otherwise answer "FAIL".
+2) Answer "✅" only if some details is provided for the error return value. Otherwise answer "❌".
 {input_val}
 """
     response = get_openai_response(prompt)
-    if response == "PASS":
+    if response == "✅":
         LOG.info("Tool error return value check passed.")
         return response
     else:
@@ -219,3 +219,33 @@ def get_annotations_check(tool_model_json: str) -> str:
     except Exception as e:
         LOG.error(f"Failed to decode JSON: {e}")
         return "NIL"
+
+
+def get_positive_test_cases(tool_name: str, tool_description: str, tool_input_schema: dict)-> str:
+    """
+    Fetch positive test cases for the given tool.
+    :param tool_name:
+    :param tool_description:
+    :param tool_input_schema:
+    :return:
+    """
+    LOG.info(f"Fetching positive test cases for tool: {tool_name}")
+
+    input_val = f"""
+    ----------------------------------------------
+    MCP Tool Description: {tool_description}
+
+    MCP Tool Input Schema: {tool_input_schema}
+    ----------------------------------------------
+        """
+
+    prompt = f"""
+    For the provided tool description and the Input Schema, generate a list of positive test cases that can be used to test the tool.
+    Generate at the max 3 test cases.
+    
+    Output must be in the tabular format with tool parameters as columns followed by expected output as last column
+
+    {input_val}
+    """
+    return get_openai_response(prompt)
+

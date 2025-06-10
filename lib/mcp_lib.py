@@ -54,7 +54,7 @@ async def populate_sse_mcp_server_capabilities(mcp_server_url):
             await display_capabilities(session)
 
 
-async def get_stdio_mcp_server_capabilities(mcp_command: str, mcp_arguments: list):
+async def populate_stdio_mcp_server_capabilities(mcp_command: str, mcp_arguments: list):
     """
     Fetch the capabilities of the MCP server using STDIO.
     """
@@ -70,3 +70,4 @@ async def get_stdio_mcp_server_capabilities(mcp_command: str, mcp_arguments: lis
 
             # Get tools
             await display_capabilities(session)
+
