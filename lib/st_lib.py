@@ -79,6 +79,7 @@ def initialize_mcp_metadata():
         st.session_state.mcp_metadata = {
             "transport_type": None,
             "command": None,
+            "command_args": None,
             "args": [],
             "url": "",
             "tools": [],
