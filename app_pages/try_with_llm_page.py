@@ -47,5 +47,5 @@ if go_button_clicked:
                 st.markdown(f"""
                 | **Tool Name**    | **Description** |
                 |------------------|-----------------|
-                | {tool.name}           | {description}   |""")
+                | {tool.name}      | {description}   |""")
 
