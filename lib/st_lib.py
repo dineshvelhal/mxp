@@ -27,11 +27,12 @@ def set_current_page(page_name: str):
 def configure_sidebar():
     """Adds a sidebar and populates the navigation menu"""
     add_app_logo('images/logo.png')
-    # st.logo("images/logo.png", size="large", icon_image="images/logo.png")
+    # st.logo("images/logo.png", size="medium", icon_image="images/logo.png")
     with st.sidebar:
-        st.markdown('''
-## `Version: 0.1`
-## `Contact: Dinesh Velhal`''')
+        st.markdown('''`Version: 0.1`
+        
+`Contact: Dinesh Velhal`''')
+        st.button("OK")
 
 
 
@@ -77,10 +78,11 @@ def initialize_mcp_metadata():
     """Initialize the dict object that holds all MCP details"""
     if "mcp_metadata" not in st.session_state:
         st.session_state.mcp_metadata = {
+            "name": None,
             "transport_type": None,
-            "command": None,
-            "command_args": None,
-            "args": [],
+            # "command": None,
+            # "command_args": None,
+            # "args": [],
             "url": "",
             "tools": [],
             "prompts": [],
@@ -203,3 +205,14 @@ def get_json_from_dict(d: dict):
         return json.dumps(d, indent=4)
     else:
         raise TypeError("Input is not a dictionary")
+
+
+# def add_subheader_style():
+#     st.markdown("""
+#         <style>
+#         h3 {
+#             border-bottom: 1px solid #ccc;
+#             padding-bottom: 10px;
+#         }
+#         </style>
+#     """, unsafe_allow_html=True)

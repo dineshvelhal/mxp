@@ -31,6 +31,23 @@ async def get_tools(client: Client) -> list:
             tools = await client.list_tools()
             return tools
     except Exception as e:
-        st.error(f"Error fetching tools: {e}")
+        # st.error(f"Error fetching tools: {e}")
         return []
 
+
+
+async def test_selected_server(transport_type: str, url: str):
+    """
+    Test the selected MCP server by checking if it is reachable.
+    :param transport_type: Transport type of the MCP server
+    :param url: URL of the MCP server
+    """
+
+    try:
+        client = await get_client()
+        async with client:
+            tools = await get_tools(client)
+            if not tools:
+                raise Exception("Cannot fetch tools from the MCP server. Please check the server URL or transport type.")
+    except Exception as e:
+        raise Exception(f"{e}!")

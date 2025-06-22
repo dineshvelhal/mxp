@@ -14,7 +14,7 @@ asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 set_current_page("mcp_explore_page")
 
 
-st.subheader("🔌 Plug-in the MCP Server")
+st.subheader(":material/troubleshoot: Inspect MCP Server capabilities")
 col1, col2 = st.columns(2)
 
 with col1:

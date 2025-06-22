@@ -3,7 +3,7 @@ enableStaticServing=true
 
 [[theme.fontFaces]]
 family = "heading-font"
-url = "app/static/exo2-regular.ttf"
+url = "app/static/SpaceGrotesk-Regular.ttf"
 weight = 300
 style = "normal"
 
@@ -15,7 +15,7 @@ style = "normal"
 
 [[theme.fontFaces]]
 family = "body-font"
-url = "app/static/JetBrainsMono-VariableFont_wght.ttf"
+url = "app/static/DMSans-Regular.ttf"
 weight = 300
 style = "normal"
 
@@ -33,7 +33,7 @@ style = "normal"
 
 [theme]
 #base = "dark"
-primaryColor = "0B76A0"
+primaryColor = "#2B2D30"
 #backgroundColor = "#F2F2F2"
 #secondaryBackgroundColor = "#00425F"
 #textColor = "#efefef"
@@ -43,15 +43,17 @@ font = "body-font"
 codeFont = "code-font"
 headingFont = "heading-font"
 #fontFaces =
-baseRadius = "large"
-#borderColor =
+baseRadius = "medium"
+buttonRadius = "medium"
+borderColor = "lightgray"
 #showWidgetBorder =
-baseFontSize = 13
+#baseFontSize = 14
 #showSidebarBorder =
+dataframeBorderColor = "lightgray"
 
 [theme.sidebar]
-primaryColor = "#38BDF8"
-backgroundColor = "#1E293B"
+primaryColor = "#1C1C1C"
+backgroundColor = "#1E1F22"
 secondaryBackgroundColor = "#00425F"
 #textColor =
 #linkColor =
@@ -69,5 +71,5 @@ level = "info"
 messageFormat = "%(asctime)s %(levelname) -7s %(name)s: %(message)s"
 
 [client]
-# showSidebarNavigation=false
+showSidebarNavigation=true
 #toolbarMode = "minimal"

@@ -10,7 +10,7 @@ from lib.st_lib import set_current_page
 LOG = logging.getLogger(__name__)
 LOG.info("Starting High Level Evaluation page")
 
-st.subheader("🤝 Try MCP Server with LLM")
+st.subheader(":material/directions_run: MCP Playground")
 
 set_current_page("try_with_llm_page")
 
