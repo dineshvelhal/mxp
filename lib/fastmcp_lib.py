@@ -1,6 +1,14 @@
+import logging
+
 from fastmcp import Client
-import asyncio
 import streamlit as st
+from fastmcp.client import SSETransport, StreamableHttpTransport
+from pandas import DataFrame
+
+from lib.st_lib import show_error
+
+LOG = logging.getLogger(__name__)
+
 
 async def get_client() -> Client:
     """
@@ -9,32 +17,50 @@ async def get_client() -> Client:
     """
     client = None
     if st.session_state.mcp_metadata['transport_type'] == 'SSE':
-        client =  Client(st.session_state.mcp_metadata['url'])
-    elif st.session_state.mcp_metadata['transport_type'] == 'STDIO':
-        st.error("STDIO transport is not supported at present.")
-        client = None
+        transport = SSETransport(url=st.session_state.mcp_metadata['url'])
+        client = Client(transport=transport)
+    elif st.session_state.mcp_metadata['transport_type'] == 'Streamable-HTTP':
+        transport = StreamableHttpTransport(url=st.session_state.mcp_metadata['url'])
+        client = Client(transport=transport)
+
     return client
 
 
-async def get_tools(client: Client) -> list:
+async def get_tools() -> list:
     """
     Get the list of tools from the MCP server.
-    :param client: FastMCP client
     :return: List of tools
     """
-    if not client:
-        st.error("Client is not initialized.")
-        return []
+
+    tool_list = []
+
+    client = await get_client()
 
     try:
         async with client:
             tools = await client.list_tools()
-            return tools
+            for tool in tools:
+                tool_row = {
+                    "NAME": tool.name,
+                    "DESCRIPTION": tool.description.replace("\n", "<br>").strip(),
+                    "INPUT_SCHEMA": tool.inputSchema,
+                    "MODEL_JSON": tool.model_dump_json(),
+                    "PARAMS": [],
+                    "ANNOTATIONS": [],
+                }
+                params = []
+                if tool.inputSchema and tool.inputSchema.get("properties"):
+                    for property in tool.inputSchema.get("properties", {}):
+                        params.append({
+                            "name": property,
+                            "type": property.type,
+                            "description": property.description or "",
+                        })
     except Exception as e:
         # st.error(f"Error fetching tools: {e}")
         return []
 
-
+    return tool_list
 
 async def test_selected_server(transport_type: str, url: str):
     """
@@ -42,12 +68,22 @@ async def test_selected_server(transport_type: str, url: str):
     :param transport_type: Transport type of the MCP server
     :param url: URL of the MCP server
     """
-
     try:
-        client = await get_client()
+        client = None
+        if transport_type == 'SSE':
+            transport = SSETransport(url)
+            client = Client(transport=transport)
+        elif transport_type == 'Streamable-HTTP':
+            transport = StreamableHttpTransport(url)
+            client = Client(transport=transport)
+        else:
+            raise ValueError(f"Unsupported transport type: {transport_type}")
+
         async with client:
-            tools = await get_tools(client)
-            if not tools:
-                raise Exception("Cannot fetch tools from the MCP server. Please check the server URL or transport type.")
+            pass
+            # tools = await client.list_tools()
+            # if not tools:
+            #     raise Exception("Cannot fetch tools from the MCP server. Please check the server URL or transport type.")
+        return True, "Server is reachable"
     except Exception as e:
-        raise Exception(f"{e}!")
+        return False, f"{e}"

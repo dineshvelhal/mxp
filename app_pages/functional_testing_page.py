@@ -1,8 +1,8 @@
 import logging
+
 import streamlit as st
 
-from lib.openai_lib import get_positive_test_cases
-from lib.st_lib import display_mcp_summary, set_current_page
+from lib.st_lib import set_current_page
 
 LOG = logging.getLogger(__name__)
 LOG.info("Starting Functional Testing page")

@@ -33,7 +33,7 @@ style = "normal"
 
 [theme]
 #base = "dark"
-primaryColor = "#2B2D30"
+primaryColor = "#0091C4"
 #backgroundColor = "#F2F2F2"
 #secondaryBackgroundColor = "#00425F"
 #textColor = "#efefef"
@@ -44,15 +44,15 @@ codeFont = "code-font"
 headingFont = "heading-font"
 #fontFaces =
 baseRadius = "medium"
-buttonRadius = "medium"
+#buttonRadius = "medium"
 borderColor = "lightgray"
 #showWidgetBorder =
 #baseFontSize = 14
 #showSidebarBorder =
-dataframeBorderColor = "lightgray"
+#dataframeBorderColor = "lightgray"
 
 [theme.sidebar]
-primaryColor = "#1C1C1C"
+primaryColor = "#414141"
 backgroundColor = "#1E1F22"
 secondaryBackgroundColor = "#00425F"
 #textColor =

@@ -1,12 +1,12 @@
-[
-    {
-        "NAME": "BMI Server",
-        "TRANSPORT_TYPE": "SSE",
-        "URL": "http://localhost:8050/sse"
-    },
-    {
-        "NAME": "Zerodha MCP Server",
-        "TRANSPORT_TYPE": "SSE",
-        "URL": "https://mcp.kite.trade/sse"
+{
+    "servers": {
+        "BMI Server": {
+            "TRANSPORT_TYPE": "SSE",
+            "URL": "http://localhost:8050/sse"
+        },
+        "Zerodha MCP Server": {
+            "TRANSPORT_TYPE": "SSE",
+            "URL": "https://mcp.kite.trade/sse"
+        }
     }
-]
+}
