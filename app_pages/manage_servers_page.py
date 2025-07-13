@@ -5,10 +5,11 @@ import time
 import pandas as pd
 import streamlit as st
 
+from lib.common_icons import SERVER_ICON
 from lib.fastmcp_lib import test_selected_server
 from lib.server_lib import get_servers, save_server_in_file, delete_server
-from lib.st_lib import display_mcp_summary, set_current_page, set_compact_cols, show_warning, show_info, show_success, \
-    reset_mcp_metadata, confirm_yes_no_dialog, show_error
+from lib.st_lib import set_current_page, set_compact_cols, show_warning, show_info, show_success, \
+    reset_mcp_metadata, confirm_yes_no_dialog, show_error, h6
 
 LOG = logging.getLogger(__name__)
 LOG.info("Starting Manage Servers page")
@@ -17,7 +18,7 @@ set_compact_cols()
 
 set_current_page("manage_servers_page")
 
-st.subheader(":material/lan: Manage MCP Servers")
+st.subheader(f"{SERVER_ICON} Manage MCP Servers")
 
 servers = get_servers()
 df = pd.DataFrame(servers).transpose()
@@ -29,6 +30,8 @@ tab_main, tab_add_server = st.tabs(["Manage Existing Servers", "Add New Server"]
 with tab_main:
     saved_servers = st.dataframe(df, use_container_width=True, hide_index=False, selection_mode="single-row", on_select="rerun")
 
+    h6(f"Current Active MCP Server: `{st.session_state['mcp_metadata'].get('name', 'None')}`")
+
     server_selected = False
     try:
         selected_row_index = saved_servers.selection["rows"][0]
@@ -38,7 +41,7 @@ with tab_main:
         server_selected = True
         # selected_index contains the index value, selected_row contains all column values
     except (KeyError, IndexError) as e:
-        show_warning(f"No server selected. Please select a server from the list. `[{e}]`")
+        show_warning(f"To change current active server, you need to select a server from above Grid. `[{e}]`")
 
     if server_selected:
         c1, c2, c3 = st.columns(3, vertical_alignment="bottom")

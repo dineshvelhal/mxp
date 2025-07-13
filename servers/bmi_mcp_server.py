@@ -1,23 +1,21 @@
+from typing import Annotated
+
 from mcp.server import FastMCP
+from pydantic import Field
 
 mcp = FastMCP(name="BMI MCP Server",
               host="0.0.0.0",
               port=8050)
 
-@mcp.tool()
-def calculate_bmi(weight: float, height: float) -> float:
+@mcp.tool(annotations={"idempotentHint": True},)
+def calculate_bmi(weight: Annotated[str, Field(description="Weight in kilograms")],
+                  height: float) -> float:
     """
     Returns the Body Mass Index (BMI) based on the provided weight (Kg) and height (meters).
 
     :param weight: weight in kilograms
     :param height: height in meters
     :return: BMI (Body Mass Index) calculated as weight divided by the square of height.
-
-    return ValueError if
-     - height is less than or equal to zero.
-     - weight is less than or equal to zero.
-     - weight is above 500 kg.
-     - height is above 3 meters.
     """
     if height <= 0:
         raise ValueError("Height must be greater than zero.")

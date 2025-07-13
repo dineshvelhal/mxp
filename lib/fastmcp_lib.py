@@ -26,7 +26,7 @@ async def get_client() -> Client:
     return client
 
 
-async def get_tools() -> list:
+async def get_tools() -> (list, str):
     """
     Get the list of tools from the MCP server.
     :return: List of tools
@@ -42,25 +42,21 @@ async def get_tools() -> list:
             for tool in tools:
                 tool_row = {
                     "NAME": tool.name,
-                    "DESCRIPTION": tool.description.replace("\n", "<br>").strip(),
-                    "INPUT_SCHEMA": tool.inputSchema,
+                    "TITLE": tool.title,
+                    "DESCRIPTION": tool.description,
                     "MODEL_JSON": tool.model_dump_json(),
-                    "PARAMS": [],
-                    "ANNOTATIONS": [],
                 }
-                params = []
-                if tool.inputSchema and tool.inputSchema.get("properties"):
-                    for property in tool.inputSchema.get("properties", {}):
-                        params.append({
-                            "name": property,
-                            "type": property.type,
-                            "description": property.description or "",
-                        })
+                tool_list.append(tool_row)
+
     except Exception as e:
         # st.error(f"Error fetching tools: {e}")
-        return []
+        return [], f"{e}"
 
-    return tool_list
+    if len(tool_list) == 0:
+        return [], "No tools found on the MCP server."
+
+    return tool_list, "Success"
+
 
 async def test_selected_server(transport_type: str, url: str):
     """

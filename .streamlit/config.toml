@@ -3,7 +3,7 @@ enableStaticServing=true
 
 [[theme.fontFaces]]
 family = "heading-font"
-url = "app/static/SpaceGrotesk-Regular.ttf"
+url = "app/static/SpaceGrotesk-Light.ttf"
 weight = 300
 style = "normal"
 

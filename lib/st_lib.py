@@ -6,6 +6,8 @@ from pathlib import Path
 
 import streamlit as st
 
+from lib.common_icons import WARNING_ICON, ERROR_ICON, INFO_ICON, SUCCESS_ICON
+
 LOG = logging.getLogger(__name__)
 
 
@@ -230,7 +232,7 @@ def show_warning(message: str):
     Show a warning message in the Streamlit app.
     :param message: The warning message to display.
     """
-    st.warning(message, icon=":material/emergency_home:")
+    st.warning(message, icon=WARNING_ICON)
     LOG.warning(message)
 
 
@@ -239,7 +241,7 @@ def show_error(message: str):
     Show an error message in the Streamlit app.
     :param message: The error message to display.
     """
-    st.error(message, icon=":material/dangerous:")
+    st.error(message, icon=ERROR_ICON)
     LOG.error(message)
 
 
@@ -248,7 +250,7 @@ def show_info(message: str):
     Show an info message in the Streamlit app.
     :param message: The info message to display.
     """
-    st.info(message, icon=":material/info:")
+    st.info(message, icon=INFO_ICON)
     LOG.info(message)
 
 def show_success(message: str):
@@ -256,7 +258,7 @@ def show_success(message: str):
     Show a success message in the Streamlit app.
     :param message: The success message to display.
     """
-    st.success(message, icon=":material/priority:")
+    st.success(message, icon=SUCCESS_ICON)
     LOG.info(message)
 
 
@@ -282,3 +284,25 @@ def confirm_yes_no_dialog(message: str, unique_feedback_name: str):
     # else:
     #     st.session_state[unique_feedback_name] = None
     #     st.rerun()
+
+
+def h4(text: str):
+    """
+    Render a header with h4 style.
+    :param text: The text to display in the header.
+    """
+    st.markdown(f"#### {text}")
+
+def h5(text: str):
+    """
+    Render a header with h5 style.
+    :param text: The text to display in the header.
+    """
+    st.markdown(f"##### {text}")
+
+def h6(text: str):
+    """
+    Render a header with h6 style.
+    :param text: The text to display in the header.
+    """
+    st.markdown(f"###### {text}")

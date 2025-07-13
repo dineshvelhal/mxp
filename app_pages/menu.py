@@ -1,28 +1,26 @@
 import streamlit as st
 
+from lib.common_icons import SERVER_ICON, HOME_ICON, TROUBLESHOOT_ICON
 
-home_page = st.Page("app_pages/about_page.py",
-                    title="About",
-                    icon=":material/home:",
-                    default=True)
+about_page = st.Page("app_pages/about_page.py",
+                     title="About",
+                     icon=HOME_ICON,
+                     default=True)
+
 manage_servers_page = st.Page("app_pages/manage_servers_page.py",
                               title="Manage Servers",
-                              icon=":material/lan:")
-mcp_explore_page = st.Page("app_pages/inspect_server_page.py",
-                           title="Inspect Server Capabilities",
-                           icon=":material/troubleshoot:")
-mcp_analysis_page = st.Page("app_pages/mcp_analysis_page.py",
-                            title="Interface Evaluation",
-                            icon="🤝")
-functional_testing_page = st.Page("app_pages/functional_testing_page.py",
-                                  title="Functional Testing",
-                                  icon=":material/assignment_turned_in:")
-try_with_llm_page = st.Page("app_pages/try_with_llm_page.py",
-                            title="Playground",
-                            icon=":material/directions_run:")
+                              icon=SERVER_ICON)
+
+inspect_server_page = st.Page("app_pages/inspect_server_page.py",
+                              title="Inspect Server Capabilities",
+                              icon=TROUBLESHOOT_ICON)
+
+playground_page = st.Page("app_pages/playground_page.py",
+                          title="Playground",
+                          icon=":material/directions_run:")
 
 def pages():
     return {
-        "Home": [home_page],
-        "MCP": [manage_servers_page, mcp_explore_page, try_with_llm_page],
+        "Home": [about_page],
+        "MCP": [manage_servers_page, inspect_server_page, playground_page],
     }
