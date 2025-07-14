@@ -146,5 +146,5 @@ def make_analysis_colorful(df: pd.DataFrame):
     :return: Styled DataFrame
     """
     return (df.style
-            .map(lambda x: 'background-color: #FFCCCC' if x in ("MISSING/INCOMPLETE", "MISSING") else '', subset=["DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"])
-            .map(lambda x: 'background-color: #CCFFCC' if x == "OK" else '', subset=["DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"]))
+            .map(lambda x: 'background-color: #FFCCCC' if x in ("MISSING/INCOMPLETE", "MISSING") else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"])
+            .map(lambda x: 'background-color: #CCFFCC' if x == "OK" else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"]))

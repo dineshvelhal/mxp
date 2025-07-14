@@ -5,11 +5,11 @@ import time
 import pandas as pd
 import streamlit as st
 
-from lib.common_icons import SERVER_ICON
+from lib.common_icons import SERVER_ICON, PRIORITY_ICON, DELETE_ICON, TEST_ICON
 from lib.fastmcp_lib import test_selected_server
 from lib.server_lib import get_servers, save_server_in_file, delete_server
-from lib.st_lib import set_current_page, set_compact_cols, show_warning, show_info, show_success, \
-    reset_mcp_metadata, confirm_yes_no_dialog, show_error, h6
+from lib.st_lib import set_current_page, set_compact_cols, show_warning, show_success, \
+    reset_mcp_metadata, show_error, h6
 
 LOG = logging.getLogger(__name__)
 LOG.info("Starting Manage Servers page")
@@ -46,13 +46,13 @@ with tab_main:
     if server_selected:
         c1, c2, c3 = st.columns(3, vertical_alignment="bottom")
         with c1:
-            set_current_server_button_clicked = st.button("Set as Current", type="primary", icon=":material/priority:")
+            set_current_server_button_clicked = st.button("Set as Current", type="primary", icon=PRIORITY_ICON)
             LOG.info(f"Set current server button clicked")
         with c2:
-            delete_server_button_clicked = st.button("Delete Selected", type="secondary", icon=":material/delete:")
+            delete_server_button_clicked = st.button("Delete Selected", type="secondary", icon=DELETE_ICON)
             LOG.info(f"Delete server button clicked")
         with c3:
-            test_server_button_clicked = st.button("Test Server", type="secondary", icon=":material/arrow_right:")
+            test_server_button_clicked = st.button("Test Server", type="secondary", icon=TEST_ICON)
             LOG.info(f"Test server button clicked")
 
 

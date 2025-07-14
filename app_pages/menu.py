@@ -1,6 +1,6 @@
 import streamlit as st
 
-from lib.common_icons import SERVER_ICON, HOME_ICON, TROUBLESHOOT_ICON
+from lib.common_icons import SERVER_ICON, HOME_ICON, TROUBLESHOOT_ICON, PLAY_ICON
 
 about_page = st.Page("app_pages/about_page.py",
                      title="About",
@@ -17,7 +17,7 @@ inspect_server_page = st.Page("app_pages/inspect_server_page.py",
 
 playground_page = st.Page("app_pages/playground_page.py",
                           title="Playground",
-                          icon=":material/directions_run:")
+                          icon=PLAY_ICON)
 
 def pages():
     return {
