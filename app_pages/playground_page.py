@@ -1,3 +1,22 @@
+import logging
+import streamlit as st
+
+from lib.common_icons import EXPLORE_ICON, PLAY_ICON, PROMPT_ICON, LLM_ICON
+from lib.st_lib import set_current_page
+
+LOG = logging.getLogger(__name__)
+LOG.info("Starting MCP Explore page")
+
+set_current_page("playground_page")
+
+st.subheader(f"{PLAY_ICON} MCP Playground")
+
+tab_prompts, tab_llm = st.tabs([f"{PROMPT_ICON} Prompts", f"{LLM_ICON} LLM Settings"])
+with tab_prompts:
+    st.write("This page is under construction. Please check back later for updates.")
+with tab_llm:
+    st.write("This page is under construction. Please check back later for updates.")
+
 # import asyncio
 # import logging
 #

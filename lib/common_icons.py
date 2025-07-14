@@ -19,6 +19,8 @@ PLAY_ICON = ":material/directions_run:"
 PRIORITY_ICON = ":material/priority:"
 DELETE_ICON = ":material/delete:"
 TEST_ICON = ":material/arrow_right:"
+EXPLORE_ICON = ":material/discover_tune:"
+LLM_ICON = ":material/wand_stars:"
 
 TROUBLESHOOT_ICON = ":material/troubleshoot:"
 WARNING_ICON = ":material/emergency_home:"
