@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 
 import pandas as pd
 import streamlit as st
@@ -10,7 +11,7 @@ from lib.fastmcp_lib import get_tools
 from lib.st_lib import set_current_page, show_info, h5, h6, show_error, set_compact_cols
 from lib.tool_lib import get_input_schema, get_output_schema, get_annotations, make_analysis_colorful
 
-LOG = logging.getLogger(__name__)
+LOG = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 LOG.info("Starting MCP Explore page")
 
 asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
@@ -49,10 +50,11 @@ with tabTools:
         mcp_tools, status_message = asyncio.run(get_tools())
 
         if len(mcp_tools) == 0:
-            st.error(f"No tools found on the MCP server. Message from server: {status_message}")
+            st.error(f"No tools found on the MCP server. Message from server: `{status_message}`")
             LOG.error(f"No tools found on the MCP server. Message from server: {status_message}")
-            st.stop()
+            # st.stop()
 
+    if mcp_tools:
         # st.success(f"Successfully fetched {len(mcp_tools)} tools from the MCP server.")
         LOG.info(f"Successfully fetched {len(mcp_tools)} tools from the MCP server.")
 

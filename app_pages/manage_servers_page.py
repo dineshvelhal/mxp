@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 import time
 
 import pandas as pd
@@ -11,7 +12,7 @@ from lib.server_lib import get_servers, save_server_in_file, delete_server
 from lib.st_lib import set_current_page, set_compact_cols, show_warning, show_success, \
     reset_mcp_metadata, show_error, h6
 
-LOG = logging.getLogger(__name__)
+LOG = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 LOG.info("Starting Manage Servers page")
 
 set_compact_cols()

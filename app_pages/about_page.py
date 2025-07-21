@@ -1,10 +1,11 @@
 import logging
+import os
 
 import streamlit as st
 
 from lib.st_lib import set_current_page
 
-LOG = logging.getLogger(__name__)
+LOG = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 LOG.info("Starting About page")
 
 set_current_page("about_page")

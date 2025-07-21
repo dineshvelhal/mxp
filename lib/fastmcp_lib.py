@@ -1,11 +1,9 @@
+import json
 import logging
 
 from fastmcp import Client
 import streamlit as st
 from fastmcp.client import SSETransport, StreamableHttpTransport
-from pandas import DataFrame
-
-from lib.st_lib import show_error
 
 LOG = logging.getLogger(__name__)
 
@@ -45,6 +43,7 @@ async def get_tools() -> (list, str):
                     "TITLE": tool.title,
                     "DESCRIPTION": tool.description,
                     "MODEL_JSON": tool.model_dump_json(),
+                    "INPUT_SCHEMA": tool.inputSchema
                 }
                 tool_list.append(tool_row)
 
@@ -83,3 +82,21 @@ async def test_selected_server(transport_type: str, url: str):
         return True, "Server is reachable"
     except Exception as e:
         return False, f"{e}"
+
+
+
+async def call_tool(tool_call: dict):
+    """
+    Call a tool on the MCP server.
+    :param tool_call: Tool call dictionary containing tool name and arguments
+    :return: Tool response
+    """
+    client = await get_client()
+
+    try:
+        async with client:
+            response = await client.call_tool(tool_call.function.name, json.loads(tool_call.function.arguments))
+            return response, "Success"
+    except Exception as e:
+        LOG.error(f"Error calling tool: {e}")
+        return None, f"Error calling tool: {e}"

@@ -1,70 +1,191 @@
+import asyncio
+import json
 import logging
+import os
+
 import streamlit as st
 
-from lib.common_icons import EXPLORE_ICON, PLAY_ICON, PROMPT_ICON, LLM_ICON
-from lib.st_lib import set_current_page
+from lib.common_icons import EXPLORE_ICON, PLAY_ICON, PROMPT_ICON, LLM_ICON, QUESTION_ICON, PLUGIN_ICON, TOOL_ICON, \
+    SELECT_ICON, EXECUTE_ICON
+from lib.fastmcp_lib import get_client, get_tools, call_tool
+from lib.openai_lib import get_llm_tool_selection_response
+from lib.st_lib import set_current_page, show_info, show_error, show_success
 
-LOG = logging.getLogger(__name__)
+LOG = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 LOG.info("Starting MCP Explore page")
 
 set_current_page("playground_page")
 
-st.subheader(f"{PLAY_ICON} MCP Playground")
+if not st.session_state.mcp_metadata.get("transport_type", ""):
+    show_info("Please set the **Current MCP server** on the **Manage Servers** page.")
+    LOG.info("No MCP server selected. Stopping further execution.")
+    st.stop()
 
-tab_prompts, tab_llm = st.tabs([f"{PROMPT_ICON} Prompts", f"{LLM_ICON} LLM Settings"])
-with tab_prompts:
-    st.write("This page is under construction. Please check back later for updates.")
-with tab_llm:
-    st.write("This page is under construction. Please check back later for updates.")
+transport_type = st.session_state.mcp_metadata.get("transport_type", "")
+server_name = st.session_state.mcp_metadata.get("name", "")
+server_url = st.session_state.mcp_metadata.get("url", "")
 
-# import asyncio
-# import logging
-#
-# import pandas as pd
-# import streamlit as st
-#
-# from lib.fastmcp_lib import get_client, get_tools
-# from lib.st_lib import set_current_page, show_error, show_info
-#
-# LOG = logging.getLogger(__name__)
-# LOG.info("Starting High Level Evaluation page")
-#
-# st.subheader(":material/directions_run: MCP Playground")
-#
-# set_current_page("try_with_llm_page")
-#
-# if not st.session_state.mcp_metadata['transport_type']:
-#     show_info("Please load the MCP server details on the MCP Explorer page")
-#     st.stop()
-#
-# col1, col2 = st.columns([3, 1], vertical_alignment="center")
-# with col1:
-#     user_question = st.text_area("Question to LLM",
-#                                  height=100,
-#                                  placeholder="Ask your question",
-#                                  label_visibility="collapsed",)
-# with col2:
-#     go_button_clicked = st.button("Go", type="primary")
-#
-# if go_button_clicked:
-#     if not user_question:
-#         show_error("Please enter a question to ask the LLM")
-#     else:
-#         with st.status("Plugged in MCP Server"):
-#             st.write(f"Transport: {st.session_state.mcp_metadata['transport_type']}")
-#             st.write(f"Server URL: {st.session_state.mcp_metadata['url']}")
-#             st.write(f"Command: {st.session_state.mcp_metadata['command']}")
-#             st.write(f"Arguments: {st.session_state.mcp_metadata['command_args']}")
-#
-#         with st.status("Fetching tools from MCP server"):
-#             # Get the client and tools
-#             client = asyncio.run(get_client())
-#             tools = asyncio.run(get_tools(client))
-#
-#             for tool in tools:
-#                 description = tool.description.replace("\n", "<br>").strip()
-#                 st.markdown(f"""
-#                 | **Tool Name**    | **Description** |
-#                 |------------------|-----------------|
-#                 | {tool.name}      | {description}   |""")
-#
+
+st.subheader(f"{PLAY_ICON} MCP Playground [Server Name: `{server_name}`]")
+
+with st.expander("LLM Settings", expanded=False, icon=":material/settings:"):
+    c1, c2 = st.columns(2, vertical_alignment="top")
+    with c1:
+        system_prompt = st.text_area("System Prompt",
+                                     height=250,
+                                     placeholder="Enter system prompt for the LLM",
+                                     max_chars=200,
+                                     value="You are a helpful assistant. Please answer the questions to the best of your ability.")
+        LOG.info(f"System prompt set: {system_prompt[:50]}...")  # Log first 50 chars for brevity
+    with c2:
+        max_tokens = st.slider("Max Tokens", min_value=100, max_value=1000, value=300, step=100)
+        temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.5, step=0.1)
+        top_p = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.9, step=0.1)
+        LOG.info(f"LLM settings - Max Tokens: {max_tokens}, Temperature: {temperature}, Top P: {top_p}")
+
+c21, c22 = st.columns(2, vertical_alignment="bottom")
+with c21:
+    question = st.text_area("Question",
+                            height=100,
+                            placeholder="Enter your question here",
+                            max_chars=200,)
+with c22:
+    submit_button = st.button("Submit your question", type="primary", icon=QUESTION_ICON)
+
+
+if submit_button:
+    if not question.strip():
+        show_error("Please enter a question before submitting.")
+        LOG.warning("Submit button clicked without a question.")
+    else:
+        LOG.info(f"Question submitted: {question[:50]}...")  # Log first 50 chars for brevity
+
+        with st.status(f"{PLUGIN_ICON} Plug-in the MCP Server", expanded=True) as plugin_status:
+            data = [{"SERVER NAME": server_name, "SERVER URL": server_url, "TRANSPORT TYPE": transport_type}]
+            st.dataframe(data, use_container_width=True, hide_index=True)
+            plugin_status.update(label=f"{PLUGIN_ICON} Plug-in the MCP Server", state="complete", expanded=False)
+
+
+        with st.status(f"{TOOL_ICON} Fetch MCP tools", expanded=True) as tool_list_status:
+            tools, tool_status = asyncio.run(get_tools())
+            tools_list = []
+            for tool in tools:
+                record = {"TOOL _NAME": tool["NAME"], "DESCRIPTION": tool["DESCRIPTION"]}
+                tools_list.append(record)
+
+            st.write("###### Available Tools")
+            st.dataframe(tools_list, use_container_width=True, hide_index=True)
+            tool_list_status.update(label=f"{TOOL_ICON} Fetch MCP tools.", state="complete", expanded=False)
+
+
+        with st.status(f"{SELECT_ICON} Request tool selection by the LLM", expanded=True) as tool_sent_status:
+            aoai_tools = [
+                {
+                    "type": "function",
+                    "function": {
+                        "name": tool["NAME"],
+                        "description": tool["DESCRIPTION"],
+                        "parameters": tool["INPUT_SCHEMA"]
+                    }
+                } for tool in tools
+            ]
+
+            aoai_tools_json = json.dumps(aoai_tools, indent=2)
+            st.write("##### Details sent to LLM")
+            c31, c32 = st.columns(2, vertical_alignment="top")
+            with c31:
+                st.write("###### System Prompt")
+                st.code(system_prompt, language="text", wrap_lines=True, height=100)
+            with c32:
+                st.write("###### Question")
+                st.code(question, language="text", wrap_lines=True, height=100)
+            st.write("###### Tools Details")
+            st.json(aoai_tools_json, expanded=True)
+
+            tool_sent_status.update(label=f"{SELECT_ICON} Request tool selection by the LLM.", state="complete", expanded=False)
+
+        with st.status(f"{LLM_ICON} Receive Tool Selection by LLM", expanded=True) as llm_response_status:
+            try:
+                messages = [{"role": "system", "content": system_prompt},
+                            {"role": "user", "content": question}]
+                message = get_llm_tool_selection_response(
+                    model="gpt-4.1-mini",
+                    max_tokens=max_tokens,
+                    temperature=temperature,
+                    top_p=top_p,
+                    messages=messages,
+                    tools=aoai_tools
+                )
+            except Exception as e:
+                show_error(f"Error getting LLM response: {e}")
+                LOG.error(f"Error getting LLM response: {e}")
+                llm_response_status.update(label=f":red[Error getting LLM response: {e}]", state="error", expanded=False)
+                st.stop()
+
+            if message.content:
+                st.write("###### LLM Response")
+                st.code(message.content, language="text", wrap_lines=True, height=100)
+            if message.tool_calls:
+                st.write("###### LLM selected the following tool calls along with arguments:")
+
+                calls = []
+                for tool_call in message.tool_calls:
+                    call_record = {
+                        "TOOL CALL ID": tool_call.id,
+                        "TOOL NAME": tool_call.function.name,
+                        "TOOL ARGUMENTS": tool_call.function.arguments,
+                    }
+                    calls.append(call_record)
+                st.dataframe(calls, use_container_width=True, hide_index=True)
+            else:
+                show_info("No tools were selected by the LLM.")
+            llm_response_status.update(label=f"{LLM_ICON} Receive Tool Selection by LLM.", state="complete", expanded=False)
+
+        if message.tool_calls:
+            with st.status(f"{EXECUTE_ICON} Execute Selected Tools", expanded=True) as tool_exec_status:
+                for call in message.tool_calls:
+                    call_result, call_status = asyncio.run(call_tool(call))
+                    if call_status != "Success":
+                        show_error(f"Error calling tool `{call.function.name}`: {call_status}")
+                        LOG.error(f"Error calling tool `{call.function.name}`: {call_status}")
+                    else:
+                        with st.container(border=True):
+                            tool_summary = [{"ID": call.id, "TOOL": call.function.name, "ARGUMENTS": call.function.arguments}]
+                            st.write("###### Tool Call Summary")
+                            st.dataframe(tool_summary, use_container_width=True, hide_index=True)
+                            st.write("###### Tool Call Result")
+                            st.write(f"**Result**: {call_result.content if call_result.content else ''}")
+                            st.write(f"**Structured Result**: {call_result.structured_content if call_result.structured_content else ''}  (This is part of the MCP protocol version `2025-06-18`.)")
+
+                    messages.append({
+                        "role": "assistant",
+                        "tool_call_id": call.id,
+                        "content": call_result.content[0].text
+                    })
+
+                tool_exec_status.update(label=f"{EXECUTE_ICON} Execute Selected Tools.", state="complete", expanded=False)
+
+            with st.status(f"{LLM_ICON} Final LLM Response", expanded=True) as final_llm_status:
+                try:
+                    final_message = get_llm_tool_selection_response(
+                        model="gpt-4.1-mini",
+                        max_tokens=max_tokens,
+                        temperature=temperature,
+                        top_p=top_p,
+                        messages=messages,
+                        tools=aoai_tools,
+                        tool_choice="none"
+                    )
+
+                    st.write("###### Final LLM Response")
+                    st.markdown(final_message.content,)
+
+                except Exception as e:
+                    show_error(f"Error getting final LLM response: {e}")
+                    LOG.error(f"Error getting final LLM response: {e}")
+                    final_llm_status.update(label=f":red[Error getting final LLM response: {e}]", state="error", expanded=True)
+
+
+
+
+
