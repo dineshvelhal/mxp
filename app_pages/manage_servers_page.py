@@ -6,7 +6,7 @@ import time
 import pandas as pd
 import streamlit as st
 
-from lib.common_icons import SERVER_ICON, PRIORITY_ICON, DELETE_ICON, TEST_ICON
+from lib.common_icons import SERVER_ICON, PRIORITY_ICON, DELETE_ICON, TEST_SERVER_ICON, ADD_ICON
 from lib.fastmcp_lib import test_selected_server
 from lib.server_lib import get_servers, save_server_in_file, delete_server
 from lib.st_lib import set_current_page, set_compact_cols, show_warning, show_success, \
@@ -30,7 +30,6 @@ tab_main, tab_add_server = st.tabs(["Manage Existing Servers", "Add New Server"]
 
 with tab_main:
     saved_servers = st.dataframe(df, use_container_width=True, hide_index=False, selection_mode="single-row", on_select="rerun")
-
     h6(f"Current Active MCP Server: `{st.session_state['mcp_metadata'].get('name', 'None')}`")
 
     server_selected = False
@@ -42,7 +41,7 @@ with tab_main:
         server_selected = True
         # selected_index contains the index value, selected_row contains all column values
     except (KeyError, IndexError) as e:
-        show_warning(f"To change current active server, you need to select a server from above Grid. `[{e}]`")
+        show_warning(f"To change current active server, select a server from the above Grid.")
 
     if server_selected:
         c1, c2, c3 = st.columns(3, vertical_alignment="bottom")
@@ -53,7 +52,7 @@ with tab_main:
             delete_server_button_clicked = st.button("Delete Selected", type="secondary", icon=DELETE_ICON)
             LOG.info(f"Delete server button clicked")
         with c3:
-            test_server_button_clicked = st.button("Test Server", type="secondary", icon=TEST_ICON)
+            test_server_button_clicked = st.button("Test Server Connection", type="secondary", icon=TEST_SERVER_ICON)
             LOG.info(f"Test server button clicked")
 
 
@@ -85,17 +84,22 @@ with tab_main:
                 show_error(f"Error connecting to server [{selected_index}]: {server_error}")
                 LOG.error(f"Error connecting to server [{selected_index}]: {server_error}")
 
+
+
 with tab_add_server:
     st.markdown("**Add New MCP Server**")
 
     with st.form("add_server_form", clear_on_submit=True):
-        server_name = st.text_input("Server Name", placeholder="Enter a name for the server")
-        transport_type = st.selectbox("Transport Type", ["SSE", "Streamable-HTTP"], index=0)
-        url = st.text_input("Server URL", placeholder="Enter the server URL")
+        server_name = st.text_input("Server Name", placeholder="Enter a name for the server",
+                                    help="This name will be used to identify the server in the list.")
+        transport_type = st.selectbox("Transport Type", ["SSE", "Streamable-HTTP"], index=0,
+                                      help="Select the transport type for the MCP server. SSE is for Server-Sent Events, Streamable-HTTP is for HTTP streaming.")
+        url = st.text_input("Server URL", placeholder="Enter the server URL",
+                            help="This is the URL of the MCP server.")
         # command = st.text_input("Command", placeholder="Enter the command to run MCP server")
         # command_args = st.text_input("Command Arguments", placeholder="Enter command arguments (comma separated)")
 
-        submit_button = st.form_submit_button("Add Server")
+        submit_button = st.form_submit_button("Add Server", type="primary", icon=ADD_ICON)
 
         if submit_button:
             if not server_name or not url:

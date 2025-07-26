@@ -33,7 +33,7 @@ server_url = st.session_state.mcp_metadata.get("url", "")
 # elif transport_type == "Streamable-HTTP":
 #     s_http_url = st.session_state.mcp_metadata.get("url", "")
 
-st.subheader(f"{TROUBLESHOOT_ICON} Inspect MCP Server capabilities [Name: `{server_name}`]")
+st.subheader(f"{TROUBLESHOOT_ICON} Inspect MCP Server capabilities [Server Name: `{server_name}`]")
 
 # if st.button(f"Load Server Details",
 #              key="load_mcp_details",
@@ -41,6 +41,9 @@ st.subheader(f"{TROUBLESHOOT_ICON} Inspect MCP Server capabilities [Name: `{serv
 #              type="primary"):
 LOG.info("Load MCP server details button clicked")
 # with st.spinner("Loading MCP server details...", show_time=True):
+
+summary_heading_slot = st.empty()
+server_summary_slot = st.empty()
 
 tabTools, tabResources, tabPrompts = st.tabs([f"{TOOL_ICON} Tools", f"{RESOURCE_ICON} Resources", f"{PROMPT_ICON} Prompts"])
 
@@ -61,14 +64,12 @@ with tabTools:
         # This section holds summary & recommendations
         with st.container(border=True):
             observations = []
-            summary_heading_slot = st.empty()
-            server_summary_slot = st.empty()
             tool_heading_slot = st.empty()
             summary_slot = st.empty()
             summary_recommendations_slot = st.empty()
 
         with st.container(border=True):
-            h5(f"{GAPS_ICON} In-depth Tool-level Gaps")
+            h5(f"{GAPS_ICON} In-depth Tool-level Checks")
             for tool in mcp_tools:
                 with st.status(f"{TOOL_ICON} Inspecting tool: `{tool['NAME']}`...",) as status:
                     tool_observations = {"TOOL NAME": tool["NAME"]}
@@ -116,7 +117,8 @@ with tabTools:
                     observations.append(tool_observations)
 
         # Display summary of observations
-        summary_heading_slot.markdown(f"##### {ANALYSIS_ICON} Server-level Gaps")
+        summary_heading_slot.markdown(f"##### {ANALYSIS_ICON} Server-level Checks",
+                                      help="This section provides an overview of the server's transport type and URL security.")
 
         if transport_type == "SSE":
             transport_msg = f":red-background[{CROSS_ICON} Server uses **SSE Transport** which is _deprecated_ as of 2025-03-26]. Recommend switching to **Streamable-HTTP Transport**. [See specs.](https://modelcontextprotocol.io/docs/concepts/transports#server-sent-events-sse-deprecated)"
@@ -133,7 +135,8 @@ with tabTools:
         - {url_msg}
         """)
 
-        tool_heading_slot.markdown(f"##### {ANALYSIS_ICON} Tool-level Gaps")
+        tool_heading_slot.markdown(f"##### {ANALYSIS_ICON} Tool-level Checks",
+                                   help="This section provides an overview of the completeness and quality of the tools available on the MCP server.")
 
         df = pd.DataFrame(observations)
         stylized_df = make_analysis_colorful(df)

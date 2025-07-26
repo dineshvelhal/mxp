@@ -99,6 +99,9 @@ def style_highlight_red_if_none(val):
         return ""
 
 
+def style_tool_name_column(val):
+    return "font-weight: bold"
+
 
 def get_annotations(tool: dict) -> (pd.DataFrame, str):
     """
@@ -147,4 +150,5 @@ def make_analysis_colorful(df: pd.DataFrame):
     """
     return (df.style
             .map(lambda x: 'background-color: #FFCCCC; color: black;' if x in ("MISSING/INCOMPLETE", "MISSING") else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"])
-            .map(lambda x: 'background-color: #CCFFCC; color: black;' if x == "OK" else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"]))
+            .map(lambda x: 'background-color: #CCFFCC; color: black;' if x == "OK" else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"])
+            .map(style_tool_name_column, subset=["TOOL NAME"]))

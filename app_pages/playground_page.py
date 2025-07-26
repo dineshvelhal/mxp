@@ -29,26 +29,31 @@ server_url = st.session_state.mcp_metadata.get("url", "")
 st.subheader(f"{PLAY_ICON} MCP Playground [Server Name: `{server_name}`]")
 
 with st.expander("LLM Settings", expanded=False, icon=":material/settings:"):
-    c1, c2 = st.columns(2, vertical_alignment="top")
+    c1, c2 = st.columns(2, vertical_alignment="top", gap="large")
     with c1:
         system_prompt = st.text_area("System Prompt",
                                      height=250,
                                      placeholder="Enter system prompt for the LLM",
                                      max_chars=200,
-                                     value="You are a helpful assistant. Please answer the questions to the best of your ability.")
+                                     value="You are a helpful assistant. Please answer the questions to the best of your ability.",
+                                     help="This is the system prompt that will be sent to the LLM. It sets the context for the conversation.",)
         LOG.info(f"System prompt set: {system_prompt[:50]}...")  # Log first 50 chars for brevity
     with c2:
-        max_tokens = st.slider("Max Tokens", min_value=100, max_value=1000, value=300, step=100)
-        temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.5, step=0.1)
-        top_p = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.9, step=0.1)
+        max_tokens = st.slider("Max Tokens", min_value=100, max_value=1000, value=300, step=100,
+                               help="Maximum number of tokens to generate in the response. Adjust based on your needs.")
+        temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.5, step=0.1,
+                                help="Controls the randomness of the output. Lower values make the output more deterministic, while higher values make it more random.")
+        top_p = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.9, step=0.1,
+                          help="Controls the diversity of the output by considering only the top P probability mass. A value of 1.0 means no restriction.")
         LOG.info(f"LLM settings - Max Tokens: {max_tokens}, Temperature: {temperature}, Top P: {top_p}")
 
-c21, c22 = st.columns(2, vertical_alignment="bottom")
+c21, c22 = st.columns(2, vertical_alignment="bottom", gap="large")
 with c21:
     question = st.text_area("Question",
                             height=100,
                             placeholder="Enter your question here",
-                            max_chars=200,)
+                            max_chars=200,
+                            help="This is the question you want to ask the LLM. It will be processed along with the system prompt.",)
 with c22:
     submit_button = st.button("Submit your question", type="primary", icon=QUESTION_ICON)
 
