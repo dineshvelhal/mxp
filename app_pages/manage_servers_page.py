@@ -49,10 +49,10 @@ with tab_main:
             set_current_server_button_clicked = st.button("Set as Current", type="primary", icon=PRIORITY_ICON)
             LOG.info(f"Set current server button clicked")
         with c2:
-            delete_server_button_clicked = st.button("Delete Selected", type="secondary", icon=DELETE_ICON)
+            delete_server_button_clicked = st.button("Delete", type="secondary", icon=DELETE_ICON)
             LOG.info(f"Delete server button clicked")
         with c3:
-            test_server_button_clicked = st.button("Test Server Connection", type="secondary", icon=TEST_SERVER_ICON)
+            test_server_button_clicked = st.button("Test Connection", type="secondary", icon=TEST_SERVER_ICON)
             LOG.info(f"Test server button clicked")
 
 
@@ -92,7 +92,7 @@ with tab_add_server:
     with st.form("add_server_form", clear_on_submit=True):
         server_name = st.text_input("Server Name", placeholder="Enter a name for the server",
                                     help="This name will be used to identify the server in the list.")
-        transport_type = st.selectbox("Transport Type", ["SSE", "Streamable-HTTP"], index=0,
+        transport_type = st.selectbox("Transport Type", ["Streamable-HTTP", "SSE", ], index=0,
                                       help="Select the transport type for the MCP server. SSE is for Server-Sent Events, Streamable-HTTP is for HTTP streaming.")
         url = st.text_input("Server URL", placeholder="Enter the server URL",
                             help="This is the URL of the MCP server.")

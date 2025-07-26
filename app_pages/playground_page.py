@@ -160,7 +160,7 @@ if submit_button:
                             st.dataframe(tool_summary, use_container_width=True, hide_index=True)
                             st.write("###### Tool Call Result")
                             st.write(f"**Result**: {call_result.content if call_result.content else ''}")
-                            st.write(f"**Structured Result**: {call_result.structured_content if call_result.structured_content else ''}  (This is part of the MCP protocol version `2025-06-18`.)")
+                            st.write(f"**Structured Result**: {call_result.structured_content if call_result.structured_content else ''}  :primary-badge[*This is part of the MCP protocol version 2025-06-18.*]")
 
                     messages.append({
                         "role": "assistant",
