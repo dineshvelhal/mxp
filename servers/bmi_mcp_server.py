@@ -9,7 +9,7 @@ mcp = FastMCP(name="BMI MCP Server",
 
 @mcp.tool(annotations={"idempotentHint": True}, description="Returns the Body Mass Index (BMI) based on the provided weight (Kg) and height (meters).")
 def calculate_bmi(weight: Annotated[float, Field(description="Weight in kilograms")],
-                  height: float) -> float:
+                  height: Annotated[float, Field(description="Height in meters")]) -> float:
     """
     Returns the Body Mass Index (BMI) based on the provided weight (Kg) and height (meters).
 

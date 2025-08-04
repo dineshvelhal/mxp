@@ -32,6 +32,6 @@ def pages():
     return {
         "Home": [about_page, manage_servers_page, ],
         "Explore Server Capabilities": [inspect_server_page, playground_page],
-        "Test MCP Server": [functional_test_page],
         "Documentation": [generate_docs_page],
+        "Test MCP Server": [functional_test_page],
     }

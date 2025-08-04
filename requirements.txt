@@ -2,3 +2,4 @@ streamlit == 1.47.1
 openai == 1.90.0
 fastmcp == 2.10.5
 mcp[cli] == 1.11.0
+pyyaml == 6.0.2

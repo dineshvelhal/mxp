@@ -1,43 +1,53 @@
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 
-# Create an MCP server
-mcp = FastMCP(name="Weather Service",
-              host="0.0.0.0",
-              port=8050)
+mcp = FastMCP(name="Sample MCP Server",)
 
-
+# Define a Tool
 @mcp.tool()
-def get_weather(location: str = "Dallas") -> str:
-    """Get the current weather for a specified location."""
-    return f"Weather in {location}: Sunny, 72°F"
+def greet_user(name: str) -> str:
+    """Greets a user by name."""
+    return f"Hello, {name}!"
+
+# Define a Resource
+@mcp.resource(uri="info://about_server",
+              description="Information about the MCP server",)
+def get_main_server_info() -> str:
+    """Provides information about this MCP server."""
+    return "This is a sample MCP server demonstrating tools, resources, and prompts."
 
 
-@mcp.tool(annotations={
-        "title": "Calculate BMI",
-    "readOnlyHint": True
-    })
-def get_bmi(weight: float, height: float) -> float:
-    """Calculate the Body Mass Index (BMI) given weight and height.
+# Define a Resource
+@mcp.resource(uri="info://{server_name}/about_server",
+              description="Information about the MCP server",)
+def get_given_server_info(server_name: str) -> str:
+    """Provides information about this MCP server."""
+    return f"This is a sample MCP server ({server_name})demonstrating tools, resources, and prompts."
 
-It accepts following parameters:
-weight: Person's weight in kilograms
-height: Person's height in meters
 
-It returns: Body Mass index (BMI) based on the metric unit inputs (weight and height).
-:return: Body Mass Index (BMI)
+# Define a Prompt
+@mcp.prompt(description="Summarizes a given text.")
+def summarize_text_prompt(text: str) -> str:
     """
-    if height <= 0:
-        raise ValueError("Height must be greater than zero.")
-    return weight / (height ** 2)
+    Generate a prompt to summarize the provided text.
+    Args:
+        text (str): The text to be summarized.
+    Returns:
+        str: The generated prompt.
+    """
+    return f"Please provide a concise summary of the following text:\n\n{text}"
 
 
-@mcp.resource(uri="file://{file_path}", mime_type="text/plain")
-def file_resource(file_path: str) -> str:
-    """Read the contents of a file at the specified path."""
-    with open(file_path, 'r') as f:
-        return f.read()
-
+@mcp.prompt(description="list of all US states")
+def list_of_states_prompt() -> str:
+    """
+    Generate a prompt to summarize the provided text.
+    Args:
+        text (str): The text to be summarized.
+    Returns:
+        str: The generated prompt.
+    """
+    return f"Please provide a list of all US states in alphabetical order."
 
 if __name__ == "__main__":
     # Run the MCP server
-    mcp.run(transport="sse")
+    mcp.run(transport="sse", port=8050)

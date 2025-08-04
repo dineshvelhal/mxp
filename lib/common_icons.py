@@ -28,6 +28,8 @@ EXECUTE_ICON = ":material/slideshow:"
 TEST_ICON = ":material/experiment:"
 DOCS_ICON = ":material/menu_book:"
 ADD_ICON = ":material/add_box:"
+GENERATE_ICON = ":material/autoplay:"
+DOWNLOAD_ICON = ":material/download:"
 
 TROUBLESHOOT_ICON = ":material/troubleshoot:"
 WARNING_ICON = ":material/emergency_home:"
