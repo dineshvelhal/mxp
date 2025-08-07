@@ -121,14 +121,14 @@ with tabTools:
                                       help="This section provides an overview of the server's transport type and URL security.")
 
         if transport_type == "SSE":
-            transport_msg = f":red-background[{CROSS_ICON} Server uses **SSE Transport** which is _deprecated_ as of 2025-03-26]. Recommend switching to **Streamable-HTTP Transport**. [See specs.](https://modelcontextprotocol.io/docs/concepts/transports#server-sent-events-sse-deprecated)"
+            transport_msg = f":red-background[❌ Server uses **SSE Transport** which is _deprecated_ as of 2025-03-26]. Recommend switching to **Streamable-HTTP Transport**. [See specs.](https://modelcontextprotocol.io/docs/concepts/transports#server-sent-events-sse-deprecated)"
         elif transport_type == "Streamable-HTTP":
-            transport_msg = f":green-background[{CHECK_ICON} Server is using **Streamable-HTTP Transport** which is the recommended transport as of 2025-03-26]."
+            transport_msg = f":green-background[✅ Server is using **Streamable-HTTP Transport** which is the recommended transport as of 2025-03-26]."
 
         if "https://" in server_url:
-            url_msg = f":green-background[{CHECK_ICON} Server URL uses **Secure http**]"
+            url_msg = f":green-background[✅ Server URL uses **Secure http**]"
         else:
-            url_msg = f":red-background[{CROSS_ICON} Server URL does not use **Secure http**. Consider using **https** for secure communication.]"
+            url_msg = f":red-background[❌ Server URL does not use **Secure http**. Consider using **https** for secure communication.]"
 
         server_summary_slot.markdown(f"""
         - {transport_msg}
@@ -144,10 +144,10 @@ with tabTools:
         summary_recommendations_slot.markdown(f"""
     ##### {LIGHTBULB_ICON} Why it matters?
     The analysis above provides insights into the completeness and quality of the tools available on the MCP server.
-    - :red-background[**Missing Descriptions**]: LLM/Agent may get the tool intent wrong or not understand its purpose during tool decision step
-    - :red-background[**Missing/Incomplete Input Schema**]: LLM/Agent may not be able to provide the correct input parameters for the tool
-    - :red-background[**Missing/Incomplete Output Schema**]: It may be the case that MCP server is not compliant with latest **MCP Specification wef 2025-06-18**
-    - :red-background[**Missing Annotations**]: Tool annotations provide additional metadata about a tool’s behavior, helping clients understand how to present and manage tools. Though not required in tool-decision step, missing annotations can lead to confusion in tool usage.
+    - :blue-background[**Missing Descriptions**]: LLM/Agent may get the tool intent wrong or not understand its purpose during tool decision step
+    - :blue-background[**Missing/Incomplete Input Schema**]: LLM/Agent may not be able to provide the correct input parameters for the tool
+    - :blue-background[**Missing/Incomplete Output Schema**]: It may be the case that MCP server is not compliant with latest **MCP Specification wef 2025-06-18**
+    - :blue-background[**Missing Annotations**]: Tool annotations provide additional metadata about a tool’s behavior, helping clients understand how to present and manage tools. Though not required in tool-decision step, missing annotations can lead to confusion in tool usage.
     
     For more details, [see specs.](https://modelcontextprotocol.io/docs/concepts/tools)
     

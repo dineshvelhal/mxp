@@ -162,11 +162,11 @@ if submit_button:
                             st.write(f"**Result**: {call_result.content if call_result.content else ''}")
                             st.write(f"**Structured Result**: {call_result.structured_content if call_result.structured_content else ''}  :primary-badge[*This is part of the MCP protocol version 2025-06-18.*]")
 
-                    messages.append({
-                        "role": "assistant",
-                        "tool_call_id": call.id,
-                        "content": call_result.content[0].text
-                    })
+                        messages.append({
+                            "role": "assistant",
+                            "tool_call_id": call.id,
+                            "content": call_result.content[0].text
+                        })
 
                 tool_exec_status.update(label=f"{EXECUTE_ICON} Execute Selected Tools.", state="complete", expanded=False)
 
@@ -190,7 +190,8 @@ if submit_button:
                     LOG.error(f"Error getting final LLM response: {e}")
                     final_llm_status.update(label=f":red[Error getting final LLM response: {e}]", state="error", expanded=True)
 
-
+        else:
+            show_error("No tools were selected by the LLM.")
 
 
 
