@@ -11,7 +11,7 @@ LOG.info("Starting About page")
 set_current_page("about_page")
 
 # st.subheader("MCP Certify")
-st.html("""<div style="font-family: 'Space Grotesk', sans-serif; font-size: 35px; font-weight: bold; color: #00A1DA;">MCP Deep-View</div>""")
+st.html("""<div style="font-family: 'Space Grotesk', sans-serif; font-size: 35px; font-weight: bold; color: #00A1DA;">MCP - Explorer</div>""")
 
 # with st.container(border=True):
 st.markdown("""
