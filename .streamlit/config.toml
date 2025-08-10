@@ -33,10 +33,10 @@ style = "normal"
 
 [theme]
 #base = "dark"
-primaryColor = "#0091C4"
-#backgroundColor = "#F2F2F2"
+primaryColor = "#2563EB"
+backgroundColor = "#F9FAFB"
 #secondaryBackgroundColor = "#00425F"
-textColor = "#000000"
+textColor = "#1F2937"
 #linkColor =
 #codeBackgroundColor =
 font = "body-font"
@@ -54,9 +54,9 @@ dataframeHeaderBackgroundColor = "#A6CAEC"
 
 [theme.sidebar]
 primaryColor = "#414141"
-backgroundColor = "#1E1F22"
+backgroundColor = "#111827"
 secondaryBackgroundColor = "#00425F"
-textColor = "#EEEEEE"
+textColor = "#E5E7EB"
 #linkColor =
 #codeBackgroundColor =
 #font =
