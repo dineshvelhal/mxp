@@ -33,7 +33,7 @@ server_url = st.session_state.mcp_metadata.get("url", "")
 # elif transport_type == "Streamable-HTTP":
 #     s_http_url = st.session_state.mcp_metadata.get("url", "")
 
-st.subheader(f"{TROUBLESHOOT_ICON} Inspect MCP Server capabilities [Server Name: `{server_name}`]")
+st.subheader(f"{TROUBLESHOOT_ICON} Inspect MCP Server capabilities [`{server_name}`]")
 
 # if st.button(f"Load Server Details",
 #              key="load_mcp_details",
@@ -74,14 +74,14 @@ with tabTools:
                 with st.status(f"{TOOL_ICON} Inspecting tool: `{tool['NAME']}`...",) as status:
                     tool_observations = {"TOOL NAME": tool["NAME"]}
 
-                    h5(f"{TOOL_ICON} {tool['NAME']}")
+                    # h5(f"{TOOL_ICON} {tool['NAME']}")
                     h6(f"{INFO_ICON} Description")
                     if tool.get("DESCRIPTION", ""):
                         st.code(tool["DESCRIPTION"], language="text", wrap_lines=True)
                         tool_observations["TOOL DESCRIPTION"] = "OK"
                     else:
                         show_error("No description found for this tool.")
-                        tool_observations["TOOL DESCRIPTION"] = "MISSING"
+                        tool_observations["TOOL DESCRIPTION"] = "Missing"
 
                     h6(f"{INPUT_ICON} Input Parameters")
                     try:
@@ -101,17 +101,18 @@ with tabTools:
                     except ValueError as e:
                         st.error(f"No output parameters found!: `[{e}]`")
                         LOG.error(f"No output parameters found!: [{e}]")
-                        tool_observations["OUTPUT SCHEMA"] = "MISSING"
+                        tool_observations["OUTPUT SCHEMA"] = "Missing"
 
                     h6(f"{ANNOTATION_ICON} Annotations")
                     try:
                         annotations, result = get_annotations(tool)
                         st.dataframe(annotations, hide_index=True)
+                        # st.markdown(annotations)
                         tool_observations["ANNOTATIONS"] = result
                     except ValueError as e:
                         st.error(f"No annotations found!: `[{e}]`")
                         LOG.error(f"No annotations found!: [{e}]")
-                        tool_observations["ANNOTATIONS"] = "MISSING"
+                        tool_observations["ANNOTATIONS"] = "Missing"
 
                     status.update(label=f"{TOOL_ICON} {tool['NAME']}", state="complete", expanded=False)
                     observations.append(tool_observations)
@@ -141,18 +142,20 @@ with tabTools:
         df = pd.DataFrame(observations)
         stylized_df = make_analysis_colorful(df)
         summary_slot.dataframe(stylized_df, hide_index=True)
-        summary_recommendations_slot.markdown(f"""
-    ##### {LIGHTBULB_ICON} Why it matters?
-    The analysis above provides insights into the completeness and quality of the tools available on the MCP server.
-    - :blue-background[**Missing Descriptions**]: LLM/Agent may get the tool intent wrong or not understand its purpose during tool decision step
-    - :blue-background[**Missing/Incomplete Input Schema**]: LLM/Agent may not be able to provide the correct input parameters for the tool
-    - :blue-background[**Missing/Incomplete Output Schema**]: It may be the case that MCP server is not compliant with latest **MCP Specification wef 2025-06-18**
-    - :blue-background[**Missing Annotations**]: Tool annotations provide additional metadata about a tool’s behavior, helping clients understand how to present and manage tools. Though not required in tool-decision step, missing annotations can lead to confusion in tool usage.
-    
-    For more details, [see specs.](https://modelcontextprotocol.io/docs/concepts/tools)
-    
-    ###### See below, what's missing/incorrect at the tool level.
-        """)
+
+        with summary_recommendations_slot:
+            with st.expander(f"{LIGHTBULB_ICON} Why it matters?", expanded=False):
+                st.markdown(f"""
+                    The analysis above provides insights into the completeness and quality of the tools available on the MCP server.
+                    - :blue-background[**Missing Descriptions**]: LLM/Agent may get the tool intent wrong or not understand its purpose during tool decision step
+                    - :blue-background[**Missing/Incomplete Input Schema**]: LLM/Agent may not be able to provide the correct input parameters for the tool
+                    - :blue-background[**Missing/Incomplete Output Schema**]: It may be the case that MCP server is not compliant with latest **MCP Specification wef 2025-06-18**
+                    - :blue-background[**Missing Annotations**]: Tool annotations provide additional metadata about a tool’s behavior, helping clients understand how to present and manage tools. Though not required in tool-decision step, missing annotations can lead to confusion in tool usage.
+                    
+                    For more details, [see specs.](https://modelcontextprotocol.io/docs/concepts/tools)
+                    
+                    ###### See below, what's missing/incorrect at the tool level.
+                """)
 
 
 with tabResources:

@@ -19,4 +19,4 @@ transport_type = st.session_state.mcp_metadata.get("transport_type", "")
 server_name = st.session_state.mcp_metadata.get("name", "")
 server_url = st.session_state.mcp_metadata.get("url", "")
 
-st.subheader(f"{TEST_ICON} Functional Testing [Server Name: `{server_name}`]")
+st.subheader(f"{TEST_ICON} Functional Testing [`{server_name}`]")

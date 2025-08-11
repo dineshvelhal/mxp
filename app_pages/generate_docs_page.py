@@ -23,7 +23,7 @@ transport_type = st.session_state.mcp_metadata.get("transport_type", "")
 server_name = st.session_state.mcp_metadata.get("name", "")
 server_url = st.session_state.mcp_metadata.get("url", "")
 
-st.subheader(f"{DOCS_ICON} Generate MCP Server Documentation [Server Name: `{server_name}`]")
+st.subheader(f"{DOCS_ICON} Generate MCP Server Documentation [`{server_name}`]")
 
 if st.button("Generate Documentation", type="primary", icon=GENERATE_ICON):
     with st.spinner("Generating documentation..."):

@@ -15,7 +15,7 @@ from lib.st_lib import set_current_page, set_compact_cols, show_warning, show_su
 LOG = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 LOG.info("Starting Manage Servers page")
 
-set_compact_cols()
+# set_compact_cols()
 
 set_current_page("manage_servers_page")
 
@@ -44,16 +44,21 @@ with tab_main:
         show_warning(f"To change current active server, select a server from the above Grid.")
 
     if server_selected:
-        c1, c2, c3 = st.columns(3, vertical_alignment="bottom")
-        with c1:
+        # c1, c2, c3 = st.columns(3, vertical_alignment="bottom")
+        # with c1:
+        #     set_current_server_button_clicked = st.button("Set as Current", type="primary", icon=PRIORITY_ICON)
+        #     LOG.info(f"Set current server button clicked")
+        # with c2:
+        #     delete_server_button_clicked = st.button("Delete", type="secondary", icon=DELETE_ICON)
+        #     LOG.info(f"Delete server button clicked")
+        # with c3:
+        #     test_server_button_clicked = st.button("Test Connection", type="secondary", icon=TEST_SERVER_ICON)
+        #     LOG.info(f"Test server button clicked")
+
+        with st.container(horizontal=True, horizontal_alignment="left"):
             set_current_server_button_clicked = st.button("Set as Current", type="primary", icon=PRIORITY_ICON)
-            LOG.info(f"Set current server button clicked")
-        with c2:
-            delete_server_button_clicked = st.button("Delete", type="secondary", icon=DELETE_ICON)
-            LOG.info(f"Delete server button clicked")
-        with c3:
             test_server_button_clicked = st.button("Test Connection", type="secondary", icon=TEST_SERVER_ICON)
-            LOG.info(f"Test server button clicked")
+            delete_server_button_clicked = st.button("Delete", type="secondary", icon=DELETE_ICON)
 
 
         if set_current_server_button_clicked:

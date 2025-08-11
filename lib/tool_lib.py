@@ -1,6 +1,7 @@
 import json
 import logging
 import pandas as pd
+from pandas.io.formats.style import Styler
 
 LOG = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ def get_input_schema(tool: dict) -> (pd.DataFrame, str):
 
         if "DESCRIPTION" not in row:
             row["DESCRIPTION"] = None
-            result = "MISSING/INCOMPLETE"
+            result = "Missing/Incomplete"
 
         params_list.append(row)
 
@@ -49,7 +50,7 @@ def get_input_schema(tool: dict) -> (pd.DataFrame, str):
     return df1, result
 
 
-def get_output_schema(tool: dict) -> pd.DataFrame:
+def get_output_schema(tool: dict) -> Styler:
     """
         Get the output schema of a tool as a list of rows.
         :param tool: Tool dictionary containing the output schema
@@ -86,24 +87,25 @@ def get_output_schema(tool: dict) -> pd.DataFrame:
     else:
         df = pd.DataFrame(params_list)
 
-    return df
+    df1 = (df.style.map(style_parameter_column, subset=["PARAMETER"]))
+    return df1
 
 
 def style_parameter_column(val):
-    return "color: blue;"
+    return "color: #0070C0;"
 
 def style_highlight_red_if_none(val):
-    if val is None or (isinstance(val, str) and val.strip() == ""):
-        return "color: red; background-color: #FFCCCC;"
+    if val is None or (isinstance(val, str) and val.strip() == "Missing"):
+        return "color: #c94045;"
     else:
         return ""
 
 
 def style_tool_name_column(val):
-    return "font-weight: bold"
+    return "color: #0070C0"
 
 
-def get_annotations(tool: dict) -> (pd.DataFrame, str):
+def get_annotations(tool: dict) -> (str, str):
     """
         Get the annotations of a tool as a list of rows.
         :param tool: Tool dictionary containing the annotations
@@ -122,22 +124,65 @@ def get_annotations(tool: dict) -> (pd.DataFrame, str):
         LOG.warning("No annotations found in the tool model.")
         raise ValueError("No annotations found in the tool model.")
 
+    if annotations.get("title") is None:
+        title = "Missing"
+    else:
+        title = annotations.get("title")
 
-    annotations_dict = [{
-        "TITLE": annotations.get("title", None),
-        "READ ONLY HINT": annotations.get("readOnlyHint", None),
-        "DESTRUCTIVE HINT": annotations.get("destructiveHint", None),
-        "IDEMPOTENT HINT": annotations.get("idempotentHint", None),
-        "OPEN WORLD HINT": annotations.get("openWorldHint", None),
-    }]
+    if annotations.get("readOnlyHint") is None:
+        readonly_hint = "Missing"
+    else:
+        readonly_hint = annotations.get("readOnlyHint")
 
-    for k, v in annotations_dict[0].items():
-        if v is None:
-            result = "MISSING/INCOMPLETE"
-            break
+    if annotations.get("destructiveHint") is None:
+        destructive_hint = "Missing"
+    else:
+        destructive_hint = annotations.get("destructiveHint")
 
+    if annotations.get("idempotentHint") is None:
+        idempotent_hint = "Missing"
+    else:
+        idempotent_hint = annotations.get("idempotentHint")
+
+    if annotations.get("openWorldHint") is None:
+        open_world_hint = "Missing"
+    else:
+        open_world_hint = annotations.get("openWorldHint")
+
+    annotations_dict = {
+        0: ["TITLE", title],
+        1: ["READ ONLY HINT", annotations.get("readOnlyHint") if not None else "Missing"],
+        2: ["DESTRUCTIVE HINT", annotations.get("destructiveHint") if not None else "Missing"],
+        3: ["IDEMPOTENT HINT", annotations.get("idempotentHint") if not None else "Missing"],
+        4: ["OPEN WORLD HINT", annotations.get("openWorldHint") if not None else "Missing"]
+    }
+
+    annotations_dict = [{"Name": "Title", "Value": title},
+                        {"Name": "Read-Only Hint", "Value": readonly_hint},
+                        {"Name": "Destructive Hint", "Value": destructive_hint},
+                        {"Name": "Idempotent Hint", "Value": idempotent_hint},
+                        {"Name": "Open World Hint", "Value": open_world_hint}]
+
+    for annotation in annotations_dict:
+        for k, v in annotations_dict[0].items():
+            if v is "Missing" or v is None:
+                result = "Missing/Incomplete"
+                break
+
+    # annotations_markdown_table = f"""
+    # | Name | Value |
+    # |------------|-------|
+    # | Title | {title} |
+    # | Read-Only Hint | {readonly_hint} |
+    # | Destructive Hint | {destructive_hint} |
+    # | Idempotent Hint | {idempotent_hint} |
+    # | Open World Hint | {open_world_hint} |
+    # """
     df = pd.DataFrame(annotations_dict)
-    df1 = (df.style.map(style_highlight_red_if_none))
+    # df = df.transpose()
+    df1 = (df.style
+           .map(style_highlight_red_if_none)
+           .map(style_parameter_column, subset=["Name"]))
 
     return df1, result
 
@@ -149,6 +194,6 @@ def make_analysis_colorful(df: pd.DataFrame):
     :return: Styled DataFrame
     """
     return (df.style
-            .map(lambda x: 'background-color: #FFCCCC; color: black;' if x in ("MISSING/INCOMPLETE", "MISSING") else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"])
-            .map(lambda x: 'background-color: #CCFFCC; color: black;' if x == "OK" else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"])
+            .map(lambda x: ' color: #c94045;' if x in ("Missing/Incomplete", "Missing") else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"])
+            .map(lambda x: ' color: #7ffa86;' if x == "OK" else '', subset=["TOOL DESCRIPTION", "INPUT SCHEMA", "OUTPUT SCHEMA", "ANNOTATIONS"])
             .map(style_tool_name_column, subset=["TOOL NAME"]))

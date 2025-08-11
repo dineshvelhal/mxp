@@ -26,7 +26,7 @@ server_name = st.session_state.mcp_metadata.get("name", "")
 server_url = st.session_state.mcp_metadata.get("url", "")
 
 
-st.subheader(f"{PLAY_ICON} MCP Playground [Server Name: `{server_name}`]")
+st.subheader(f"{PLAY_ICON} MCP Playground [`{server_name}`]")
 
 with st.expander("LLM Settings", expanded=False, icon=":material/settings:"):
     c1, c2 = st.columns(2, vertical_alignment="top", gap="large")

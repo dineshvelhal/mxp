@@ -12,7 +12,7 @@ manage_servers_page = st.Page("app_pages/manage_servers_page.py",
                               icon=SERVER_ICON)
 
 inspect_server_page = st.Page("app_pages/inspect_server_page.py",
-                              title="Inspect Server Capabilities",
+                              title="Inspect",
                               icon=TROUBLESHOOT_ICON)
 
 playground_page = st.Page("app_pages/playground_page.py",
@@ -20,18 +20,18 @@ playground_page = st.Page("app_pages/playground_page.py",
                           icon=PLAY_ICON)
 
 functional_test_page = st.Page("app_pages/functional_test_page.py",
-                              title="Functional Test",
+                              title="Functional Testing",
                               icon=TEST_ICON)
 
 generate_docs_page = st.Page("app_pages/generate_docs_page.py",
-                             title="Generate Server Documentation",
+                             title="Generate",
                              icon=DOCS_ICON)
 
 
 def pages():
     return {
         "Home": [about_page, manage_servers_page, ],
-        "Explore Server Capabilities": [inspect_server_page, playground_page],
+        "Server Capabilities": [inspect_server_page, playground_page],
         "Documentation": [generate_docs_page],
-        "Test MCP Server": [functional_test_page],
+        "Testing": [functional_test_page],
     }
