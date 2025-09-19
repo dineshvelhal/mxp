@@ -31,8 +31,9 @@ st.subheader(f"{PLAY_ICON} MCP Playground [`{server_name}`]")
 with st.expander("LLM Settings", expanded=False, icon=":material/settings:"):
     c1, c2 = st.columns(2, vertical_alignment="top", gap="large")
     with c1:
+        selected_model = st.selectbox("Select LLM Model", ["gpt-4.1-mini", "gpt-4.1", "gpt-5-mini", "gpt-5"],)
         system_prompt = st.text_area("System Prompt",
-                                     height=250,
+                                     height=150,
                                      placeholder="Enter system prompt for the LLM",
                                      max_chars=200,
                                      value="You are a helpful assistant. Please answer the questions to the best of your ability.",
@@ -114,7 +115,7 @@ if submit_button:
                 messages = [{"role": "system", "content": system_prompt},
                             {"role": "user", "content": question}]
                 message = get_llm_tool_selection_response(
-                    model="gpt-4.1-mini",
+                    model=selected_model,
                     max_tokens=max_tokens,
                     temperature=temperature,
                     top_p=top_p,
@@ -173,7 +174,7 @@ if submit_button:
             with st.status(f"{LLM_ICON} Final LLM Response", expanded=True) as final_llm_status:
                 try:
                     final_message = get_llm_tool_selection_response(
-                        model="gpt-4.1-mini",
+                        model=selected_model,
                         max_tokens=max_tokens,
                         temperature=temperature,
                         top_p=top_p,

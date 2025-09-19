@@ -19,7 +19,7 @@ LOG.info("Starting Manage Servers page")
 
 set_current_page("manage_servers_page")
 
-st.subheader(f"{SERVER_ICON} Manage MCP Servers")
+st.subheader(f"{SERVER_ICON} Server Connections")
 
 servers = get_servers()
 df = pd.DataFrame(servers).transpose()

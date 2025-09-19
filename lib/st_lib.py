@@ -33,7 +33,7 @@ def configure_sidebar():
     # st.logo("images/logo.png", size="medium", icon_image="images/logo.png")
     with st.sidebar:
         st.markdown('''`Version: 0.1`
-        
+
 `Contact: Dinesh Velhal`''')
 
 

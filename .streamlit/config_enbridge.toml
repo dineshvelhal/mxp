@@ -6,6 +6,14 @@ family = "SpaceGrotesk"
 url = "app/static/SpaceGrotesk-VariableFont_wght.ttf"
 
 [[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins-Regular.ttf"
+
+[[theme.fontFaces]]
+family = "Poppins-bold"
+url = "app/static/Poppins-Bold.ttf"
+
+[[theme.fontFaces]]
 family = "Roboto"
 url = "app/static/Roboto-VariableFont_wdth,wght.ttf"
 
@@ -38,17 +46,20 @@ style = "normal"
 weight = 400
 
 [theme]
-base = "dark"
-primaryColor = "#0070C0"
-backgroundColor = "#2a2a2a"
-secondaryBackgroundColor = "black"
-codeBackgroundColor = "black"
-textColor = "#ffffff"
-linkColor = "#0070C0"
-borderColor = "#7c7c7c"
-showWidgetBorder = false
+base = "light"
+primaryColor = "#D69400"
+#backgroundColor = "#EAEAED"
+#secondaryBackgroundColor = "black"
+#codeBackgroundColor = "black"
+#textColor = "#ffffff"
+#linkColor = "#0070C0"
+#borderColor = "#FFB81C"
+showWidgetBorder = true
 baseRadius = "medium"
 buttonRadius = "medium"
+
+dataframeBorderColor = "#FFD77D"
+#dataframeHeaderBackgroundColor = "#FFF3D9"
 
 #showSidebarBorder = true
 
@@ -59,16 +70,16 @@ codeFont = "RobotoMono"
 codeFontSize = ".75rem"
 #codeBackgroundColor = "#ecebe4"
 
-headingFont = "SpaceGrotesk"
+headingFont = "Poppins-bold"
 headingFontWeights = [600,500,500,500,500,500]
 headingFontSizes = ["3rem", "2rem"]
 
 [theme.sidebar]
 #backgroundColor = "#121212"
-backgroundColor = "black"
-secondaryBackgroundColor = "#000000"
-codeBackgroundColor = "#2a2a2a"
-borderColor = "#696969"
+backgroundColor = "#353535"
+#secondaryBackgroundColor = "#000000"
+codeBackgroundColor = "#353535"
+borderColor = "#FFB81C"
 #font = "SpaceGrotesk"
 headingFontSizes = ["1.6rem", "1.4rem", "1.2rem"]
 

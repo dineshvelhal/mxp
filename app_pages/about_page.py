@@ -11,19 +11,42 @@ LOG.info("Starting About page")
 set_current_page("about_page")
 
 # st.subheader("MCP Certify")
-st.html("""<div style="font-family: 'Space Grotesk', sans-serif; font-size: 35px; font-weight: bold; color: #0070C0;">MCP Deep-View</div>""")
+st.html("""<H1 style="color: #00B0F0;">About MCP Explorer</H1>""", width="content")
 
 # with st.container(border=True):
-st.markdown("""
-About MCP Deep-Eval
+# st.markdown("""
+# About MCP Deep-Eval
+# """)
+
+c1, c2, c3 = st.columns(3, vertical_alignment="top", border=True)
+with c1:
+    st.markdown("""
+#### Why test MCP Servers?
+- It's a piece of software (Obviously! 😊)
+- **Higher risk** due to autonomous use by AI Agents
+- To ensure they **integrate** well with other systems
+- Ensure they meet **Org standards and policies**
+- Ensure they **perform well under load**
+ """)
+with c2:
+    st.markdown("""
+#### MCP Deep-View Features
+- **Inspect** MCP server capabilities
+- **Gap analysis** of Server Metadata (input schema, annotations etc.)
+- **Integration testing** with LLMs and Agents
+- Generate **human-readable** MCP server **documentation**
+- Generate **functional tests** for MCP servers
 """)
 
-# c1, c2, c3 = st.columns(3)
-#
-# with c1:
-#     st.image("images/banner1.png", use_container_width=True)
-# with c2:
-#     st.image("images/banner2.png", use_container_width=True)
-# with c3:
-#     st.image("images/banner3.png", use_container_width=True)
+with c3:
+    st.markdown("""
+#### Currently supports
+- Transport types
+    - **SSE**
+    - **Streamable HTTP**
+- Servers hosted **locally**
+- **Remote Servers** from internet
+- Servers developed in **any language**
+- Latest MCP protocol **revision dt. 2025-06-18**
+""")
 
