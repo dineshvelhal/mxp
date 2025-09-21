@@ -286,3 +286,26 @@ def get_llm_tool_selection_response(model: str,
 #     """
 #     return get_openai_response(prompt)
 
+def get_test_cases(prompt: str) -> str:
+    """
+    Get test cases generated for a given prompt.
+    :param prompt:
+    :return: OpenAI response
+    """
+    LOG.info(f"Getting OpenAI response for prompt: {prompt}")
+    if OPEN_AI_API_KEY is None:
+        raise ValueError("OPENAI_API_KEY is not set in the environment variables.")
+
+    client = get_openai_client()
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7,
+        max_tokens=800,
+    )
+
+    ret_val = response.choices[0].message.content.strip()
+    LOG.info(f"OpenAI response: {ret_val}")
+    return ret_val

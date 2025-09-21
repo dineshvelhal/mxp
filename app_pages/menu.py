@@ -19,7 +19,7 @@ playground_page = st.Page("app_pages/playground_page.py",
                           title="Playground",
                           icon=PLAY_ICON)
 
-functional_test_page = st.Page("app_pages/functional_test_page.py",
+functional_test_page = st.Page("app_pages/generate_test_page.py",
                               title="Functional Testing",
                               icon=TEST_ICON)
 
