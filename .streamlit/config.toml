@@ -68,7 +68,7 @@ headingFontSizes = ["3rem", "2rem"]
 backgroundColor = "black"
 secondaryBackgroundColor = "#000000"
 codeBackgroundColor = "#2a2a2a"
-borderColor = "#696969"
+borderColor = "#0070C0"
 #font = "SpaceGrotesk"
 headingFontSizes = ["1.6rem", "1.4rem", "1.2rem"]
 
