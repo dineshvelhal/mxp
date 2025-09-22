@@ -50,6 +50,6 @@ with c3:
 - Servers hosted **:blue[locally]**
 - **:blue[Remote Servers]** from internet
 - Servers developed in **:blue[any language]**
-- Latest MCP protocol **:blue[revision dt. 2025-06-18:blue[**
+- Latest MCP protocol **:blue[revision dt. 2025-06-18:blue]**
 """)
 

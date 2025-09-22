@@ -45,145 +45,143 @@ LOG.info("Load MCP server details button clicked")
 summary_heading_slot = st.empty()
 server_summary_slot = st.empty()
 
-# tabTools, tabResources, tabPrompts = st.tabs([f"{TOOL_ICON} Tools", f"{RESOURCE_ICON} Resources", f"{PROMPT_ICON} Prompts"])
+tabTools, tabResources, tabPrompts = st.tabs([f"{TOOL_ICON} Tools", f"{RESOURCE_ICON} Resources", f"{PROMPT_ICON} Prompts"])
 
-# with tabTools:
-with st.spinner("Fetching tools from the MCP server...", show_time=True):
-    # mcp_client = asyncio.run(get_client())
-    mcp_tools, status_message = asyncio.run(get_tools())
+with tabTools:
+    with st.spinner("Fetching tools from the MCP server...", show_time=True):
+        # mcp_client = asyncio.run(get_client())
+        mcp_tools, status_message = asyncio.run(get_tools())
 
-    if len(mcp_tools) == 0:
-        st.error(f"No tools found on the MCP server. Message from server: `{status_message}`")
-        LOG.error(f"No tools found on the MCP server. Message from server: {status_message}")
-        # st.stop()
+        if len(mcp_tools) == 0:
+            st.error(f"No tools found on the MCP server. Message from server: `{status_message}`")
+            LOG.error(f"No tools found on the MCP server. Message from server: {status_message}")
+            # st.stop()
 
-if mcp_tools:
-    # st.success(f"Successfully fetched {len(mcp_tools)} tools from the MCP server.")
-    LOG.info(f"Successfully fetched {len(mcp_tools)} tools from the MCP server.")
+    if mcp_tools:
+        # st.success(f"Successfully fetched {len(mcp_tools)} tools from the MCP server.")
+        LOG.info(f"Successfully fetched {len(mcp_tools)} tools from the MCP server.")
 
-    st.divider()
-    st.markdown(f"##### :blue[{ANALYSIS_ICON} Tool-level Checks]",
-              help="This section provides an overview of the completeness and quality of the tools available on the MCP server.")
+        # st.divider()
+        st.markdown(f"##### :blue[{ANALYSIS_ICON} Tool-level Checks]",
+                  help="This section provides an overview of the completeness and quality of the tools available on the MCP server.")
 
-    # This section holds summary & recommendations
-    # with st.container(border=True):
-    observations = []
-    tool_heading_slot = st.empty()
-    summary_slot = st.empty()
-    summary_recommendations_slot = st.empty()
+        # This section holds summary & recommendations
+        # with st.container(border=True):
+        observations = []
+        tool_heading_slot = st.empty()
+        summary_slot = st.empty()
+        summary_recommendations_slot = st.empty()
 
-    # with st.container(border=True):
-    h5(f"{GAPS_ICON} Details")
-    for tool in mcp_tools:
-        with st.status(f"{TOOL_ICON} Inspecting tool: `{tool['NAME']}`...",) as status:
-            tool_observations = {"TOOL NAME": tool["NAME"]}
+        # with st.container(border=True):
+        h5(f"{GAPS_ICON} Details")
+        for tool in mcp_tools:
+            with st.status(f"{TOOL_ICON} Inspecting tool: `{tool['NAME']}`...",) as status:
+                tool_observations = {"TOOL NAME": tool["NAME"]}
 
-            # h5(f"{TOOL_ICON} {tool['NAME']}")
-            h6(f"{INFO_ICON} Description")
-            if tool.get("DESCRIPTION", ""):
-                st.code(tool["DESCRIPTION"], language="text", wrap_lines=True)
-                tool_observations["TOOL DESCRIPTION"] = "✅ OK"
-            else:
-                show_error("No description found for this tool.")
-                tool_observations["TOOL DESCRIPTION"] = "❌ Missing"
+                # h5(f"{TOOL_ICON} {tool['NAME']}")
+                h6(f"{INFO_ICON} Description")
+                if tool.get("DESCRIPTION", ""):
+                    st.code(tool["DESCRIPTION"], language="text", wrap_lines=True)
+                    tool_observations["TOOL DESCRIPTION"] = "✅ OK"
+                else:
+                    show_error("No description found for this tool.")
+                    tool_observations["TOOL DESCRIPTION"] = "❌ Missing"
 
-            h6(f"{INPUT_ICON} Input Parameters")
-            try:
-                input_schema, result = get_input_schema(tool)
-                st.dataframe(input_schema, hide_index=True)
-                tool_observations["INPUT SCHEMA"] = result
-            except ValueError as e:
-                st.error(f"No input parameters found!: `[{e}]`")
-                LOG.error(f"No input parameters found!: [{e}]")
-                tool_observations["INPUT SCHEMA"] = "NA"
+                h6(f"{INPUT_ICON} Input Parameters")
+                try:
+                    input_schema, result = get_input_schema(tool)
+                    st.dataframe(input_schema, hide_index=True)
+                    tool_observations["INPUT SCHEMA"] = result
+                except ValueError as e:
+                    st.error(f"No input parameters found!: `[{e}]`")
+                    LOG.error(f"No input parameters found!: [{e}]")
+                    tool_observations["INPUT SCHEMA"] = "NA"
 
-            h6(f"{OUTPUT_ICON} Output Parameters")
-            try:
-                output_schema = get_output_schema(tool)
-                st.dataframe(output_schema, hide_index=True)
-                tool_observations["OUTPUT SCHEMA"] = "✅ OK"
-            except ValueError as e:
-                st.error(f"No output parameters found!: `[{e}]`")
-                LOG.error(f"No output parameters found!: [{e}]")
-                tool_observations["OUTPUT SCHEMA"] = "❌ Missing"
+                h6(f"{OUTPUT_ICON} Output Parameters")
+                try:
+                    output_schema = get_output_schema(tool)
+                    st.dataframe(output_schema, hide_index=True)
+                    tool_observations["OUTPUT SCHEMA"] = "✅ OK"
+                except ValueError as e:
+                    st.error(f"No output parameters found!: `[{e}]`")
+                    LOG.error(f"No output parameters found!: [{e}]")
+                    tool_observations["OUTPUT SCHEMA"] = "❌ Missing"
 
-            h6(f"{ANNOTATION_ICON} Annotations")
-            try:
-                annotations, result = get_annotations(tool)
-                st.dataframe(annotations, hide_index=True)
-                # st.markdown(annotations)
-                tool_observations["ANNOTATIONS"] = result
-            except ValueError as e:
-                st.error(f"No annotations found!: `[{e}]`")
-                LOG.error(f"No annotations found!: [{e}]")
-                tool_observations["ANNOTATIONS"] = "❌ Missing"
+                h6(f"{ANNOTATION_ICON} Annotations")
+                try:
+                    annotations, result = get_annotations(tool)
+                    st.dataframe(annotations, hide_index=True)
+                    # st.markdown(annotations)
+                    tool_observations["ANNOTATIONS"] = result
+                except ValueError as e:
+                    st.error(f"No annotations found!: `[{e}]`")
+                    LOG.error(f"No annotations found!: [{e}]")
+                    tool_observations["ANNOTATIONS"] = "❌ Missing"
 
-            status.update(label=f"{TOOL_ICON} {tool['NAME']}", state="complete", expanded=False)
-            observations.append(tool_observations)
+                status.update(label=f"{TOOL_ICON} {tool['NAME']}", state="complete", expanded=False)
+                observations.append(tool_observations)
 
-    # Display summary of observations
-    summary_heading_slot.markdown(f"##### :blue[{ANALYSIS_ICON} Server-level Checks]",
-                                  help="This section provides an overview of the server's transport type and URL security.")
+        # Display summary of observations
+        summary_heading_slot.markdown(f"##### :blue[{ANALYSIS_ICON} Server-level Checks]",
+                                      help="This section provides an overview of the server's transport type and URL security.")
 
-    transport_msg = ""
-    if transport_type == "SSE":
-        transport_msg = f":red-background[Server uses **SSE Transport** (_deprecated_ as of 2025-03-26)]"
-        transport_recommendation = ("Switch to **Streamable-HTTP Transport**. "
-                                    "[See specs.](https://modelcontextprotocol.io/docs/concepts/"
-                                    "transports#server-sent-events-sse-deprecated)")
-    elif transport_type == "Streamable-HTTP":
-        transport_msg = f":green-background[Server is using **Streamable-HTTP Transport** which is the recommended transport as of 2025-03-26]."
-        transport_recommendation = "No action needed."
+        transport_msg = ""
+        if transport_type == "SSE":
+            transport_msg = f":red-background[Server uses **SSE Transport** (_deprecated_ as of 2025-03-26)]"
+            transport_recommendation = ("Switch to **Streamable-HTTP Transport**. "
+                                        "[See specs.](https://modelcontextprotocol.io/docs/concepts/"
+                                        "transports#server-sent-events-sse-deprecated)")
+        elif transport_type == "Streamable-HTTP":
+            transport_msg = f":green-background[Server is using **Streamable-HTTP Transport** which is the recommended transport as of 2025-03-26]."
+            transport_recommendation = "No action needed."
 
-    if "https://" in server_url:
-        url_msg = f":green-background[Server URL uses **Secure http**]"
-        url_recommendation = "No action needed."
-    else:
-        url_msg = f"Server URL does not use **Secure http**. Consider using **https** for secure communication."
-        url_recommendation = "Consider using **https** for secure communication. "
+        if "https://" in server_url:
+            url_msg = f":green-background[Server URL uses **Secure http**]"
+            url_recommendation = "No action needed."
+        else:
+            url_msg = f"Server URL does not use **Secure http**. Consider using **https** for secure communication."
+            url_recommendation = "Consider using **https** for secure communication. "
 
-    server_summary_slot.write(f"""
-    - {transport_msg}
-    - {url_msg}
-    """)
+        server_summary_slot.write(f"""
+        - {transport_msg}
+        - {url_msg}
+        """)
 
-    server_summary_slot.markdown(f"""
-    | Status | Recommendation |
-    |--------|----------------|
-    | {transport_msg} | {transport_recommendation} |
-    | {url_msg} | {url_recommendation} |
-    """)
+        server_summary_slot.markdown(f"""
+        | Status | Recommendation |
+        |--------|----------------|
+        | {transport_msg} | {transport_recommendation} |
+        | {url_msg} | {url_recommendation} |
+        """)
 
-    tool_heading_slot.markdown(f"##### {ANALYSIS_ICON} Summary")
+        tool_heading_slot.markdown(f"##### {ANALYSIS_ICON} Summary")
 
-    df = pd.DataFrame(observations)
-    stylized_df = make_analysis_colorful(df)
-    summary_slot.dataframe(stylized_df, hide_index=True)
+        df = pd.DataFrame(observations)
+        stylized_df = make_analysis_colorful(df)
+        summary_slot.dataframe(stylized_df, hide_index=True)
 
-    with summary_recommendations_slot:
-        with st.expander(f"💡 Why it matters?", expanded=False):
-            st.markdown(f"""
-                The analysis above provides insights into the completeness and quality of the tools available on the MCP server.
- 
-                | Observation | What it means? |
-                |-------------|----------------|    
-                | :blue-background[**Missing Descriptions**] | LLM/Agent may get the tool intent wrong or not understand its purpose during tool decision step |
-                | :blue-background[**Missing/Incomplete Input Schema**] | LLM/Agent may not be able to provide the correct input parameters for the tool |
-                | :blue-background[**Missing/Incomplete Output Schema**] | It may be the case that MCP server is not compliant with latest `MCP Specification wef 2025-06-18` |
-                | :blue-background[**Missing Annotations**] | Tool annotations provide additional metadata about a tool’s behavior, helping clients understand how to present and manage tools. Though not required in tool-decision step, missing annotations can lead to confusion in tool usage. |    
-                
-                For more details, [see specs.](https://modelcontextprotocol.io/docs/concepts/tools)
-                
-                ###### See below, what's missing/incorrect at the tool level.
-            """)
+        with summary_recommendations_slot:
+            with st.expander(f"💡 Why it matters?", expanded=False):
+                st.markdown(f"""
+                    The analysis above provides insights into the completeness and quality of the tools available on the MCP server.
+     
+                    | Observation | What it means? |
+                    |-------------|----------------|    
+                    | :blue-background[**Missing Descriptions**] | LLM/Agent may get the tool intent wrong or not understand its purpose during tool decision step |
+                    | :blue-background[**Missing/Incomplete Input Schema**] | LLM/Agent may not be able to provide the correct input parameters for the tool |
+                    | :blue-background[**Missing/Incomplete Output Schema**] | It may be the case that MCP server is not compliant with latest `MCP Specification wef 2025-06-18` |
+                    | :blue-background[**Missing Annotations**] | Tool annotations provide additional metadata about a tool’s behavior, helping clients understand how to present and manage tools. Though not required in tool-decision step, missing annotations can lead to confusion in tool usage. |    
+                    
+                    For more details, [see specs.](https://modelcontextprotocol.io/docs/concepts/tools)
+                """)
 
 
-# with tabResources:
-#     c1, c2, c3, c4, c5 = st.columns(5)
-#     with c3:
-#         st.image("images/wip.png", use_container_width=True)
-#
-# with tabPrompts:
-#     c21, c22, c23, c24, c25 = st.columns(5)
-#     with c23:
-#         st.image("images/wip.png", use_container_width=True)
+with tabResources:
+    c1, c2, c3, c4, c5 = st.columns(5)
+    with c3:
+        st.image("images/wip.png", use_container_width=True)
+
+with tabPrompts:
+    c21, c22, c23, c24, c25 = st.columns(5)
+    with c23:
+        st.image("images/wip.png", use_container_width=True)
