@@ -18,8 +18,8 @@ set_current_page("about_page")
 # About MCP Deep-Eval
 # """)
 
-st.subheader("MCP Explorer", divider="blue")
-h5("Explore. Test. Document. Your MCP Servers.")
+# st.subheader("MCP Explorer", divider="blue")
+st.subheader(":blue[Explore. Test. Document. Your MCP Servers.]", divider="blue")
 
 c1, c2, c3 = st.columns(3, vertical_alignment="top", border=True)
 with c1:
